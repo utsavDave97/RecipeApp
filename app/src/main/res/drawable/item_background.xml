@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--This xml file is for items in Navigation Drawer
+    If the item is selected there would be an indicator of primary color
+    on that item.-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/colorPrimary" android:state_checked="true" />
+    <item android:drawable="@android:color/transparent" />
+</selector>

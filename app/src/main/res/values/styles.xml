@@ -17,4 +17,23 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="TextAppearance.Widget.Event.Toolbar.Title." parent="Theme.AppCompat">
+        <item name="android:textAlignment">center</item>
+        <item name="android:fontFamily">@font/khula_regular</item>
+        <item name="android:textColorPrimary">#000000</item>
+        <item name="android:textColorSecondary">#000000</item>
+        <item name="actionMenuTextColor">#000000</item>
+    </style>
+
+    <style name="TextAppearance.Widget.Event.Toolbar.Title2" parent="Theme.AppCompat">
+        <item name="android:textColorPrimary">#000000</item>
+        <item name="android:textColorSecondary">#000000</item>
+        <item name="actionMenuTextColor">#000000</item>
+    </style>
+
+    <style name="NavigationTheme">
+        <item name="android:fontFamily">@font/khula_lightt</item>
+        <item name="android:textSize">22sp</item>
+    </style>
+
 </resources>
