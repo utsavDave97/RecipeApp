@@ -6,4 +6,16 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
+
+    <!--Navigation Drawer Items-->
+    <string name="navHome">Home</string>
+    <string name="navSettings">Settings</string>
+    <string name="navCreate">Create Your Own</string>
+    <string name="navYourRecipes">Your Recipes</string>
+    <string name="navFav">Favorites</string>
+    <string name="navCalculator">Calorie Calculator</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
