@@ -4,10 +4,38 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/***
+ * @author Utsav Dave
+ * @date 19th Feb 2019
+ *
+ * This class file is for the Main Fragment. Here the data would be populated inside RecyclerView.
+ */
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,7 +45,19 @@ import android.view.ViewGroup;
  * Use the {@link MainFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment
+{
+    //Declaring all the required variables
+    List<Recipe> recipeList = new ArrayList<>();
+    RecipeRecyclerViewAdapter adapter;
+    public static RecyclerView recipeRecyclerView;
+    EditText selectRecipeEditText;
+    Button searchButton;
+
+    //Creating a URL which would be used when making Volley request
+    private String URL_GET_RECIPE = "https://www.food2fork.com/api/search?key="+Constants.API_KEY;
+    private String URL_FILTER_RECIPE = "https://www.food2fork.com/api/search?key="+Constants.API_KEY+"&q=";
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -62,9 +102,52 @@ public class MainFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             Bundle savedInstanceState)
+    {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
+
+        //This line would ensure that the editText on the screen won't open keyboard as soon as the
+        //screen launches.
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        //Getting RecyclerView by its ID
+        recipeRecyclerView = view.findViewById(R.id.recipeRecyclerView);
+
+        //Getting EditText & Button by its ID
+        selectRecipeEditText = view.findViewById(R.id.selectRecipeEditText);
+        searchButton = view.findViewById(R.id.searchButton);
+
+        //recipeRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
+
+        //Setting up LayoutManager for the RecyclerView
+        recipeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        recipeList.clear();
+
+        //This would be populate data inside RecyclerView
+        initializeData();
+
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                String searchText = selectRecipeEditText.getText().toString().trim();
+
+                //Check if EditText is empty or not
+                if(TextUtils.isEmpty(searchText))
+                {
+                    //If empty create a error
+                    selectRecipeEditText.setError("Please enter recipe name");
+                    selectRecipeEditText.requestFocus();
+                    return;
+                }
+
+                filterData(searchText);
+            }
+        });
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -72,6 +155,137 @@ public class MainFragment extends Fragment {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+    /**
+     *This method creates a Request to the URL specified and populates data based on the response
+     */
+    private void initializeData()
+    {
+
+        String tag_string_req = "req_get_recipe";
+
+        //Create a StringRequest with GET Method
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL_GET_RECIPE,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response)
+                    {
+
+                        //Declare a JSON object
+                        JSONObject jsonObject;
+                        try
+                        {
+                            //Store the response inside the JSON Object
+                            jsonObject = new JSONObject(response);
+
+                            //Get the array of response and store it inside JSONArray
+                            JSONArray array = jsonObject.getJSONArray("recipes");
+
+                            //Loop through the array
+                            for (int i = 0; i < array.length(); i++)
+                            {
+                                //Get single object
+                                JSONObject recipe = array.getJSONObject(i);
+
+                                //Add that object inside dataSet withe the help of Recipe's constructor
+                                recipeList.add(new Recipe(
+                                        recipe.getString("title"),
+                                        recipe.getString("social_rank"),
+                                        recipe.getString("image_url"),
+                                        recipe.getString("source_url")
+                                ));
+                            }
+
+                            //Initialize the Recycler View adapter with context and dataset
+                            adapter = new RecipeRecyclerViewAdapter(getContext(),recipeList);
+
+                            //Add adapter to the recyclerView
+                            recipeRecyclerView.setAdapter(adapter);
+                        }
+                        catch (JSONException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+
+            }
+        });
+
+        //Using getInstance method of Singleton class and adding the StringRequest to RequestQueue
+        AppController.getInstance().addToRequestQueue(stringRequest,tag_string_req);
+    }
+
+    /**
+     *
+     * @param searchText
+     */
+    private void filterData(String searchText)
+    {
+
+        recipeList.clear();
+
+        String tag_string_req = "req_get_filter_recipe";
+
+        //Create a StringRequest with GET Method
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL_FILTER_RECIPE+searchText,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response)
+                    {
+
+                        //Declare a JSON object
+                        JSONObject jsonObject;
+                        try
+                        {
+                            //Store the response inside the JSON Object
+                            jsonObject = new JSONObject(response);
+
+                            //Get the array of response and store it inside JSONArray
+                            JSONArray array = jsonObject.getJSONArray("recipes");
+
+                            //Loop through the array
+                            for (int i = 0; i < array.length(); i++)
+                            {
+                                //Get single object
+                                JSONObject recipe = array.getJSONObject(i);
+
+                                //Add that object inside dataSet withe the help of Recipe's constructor
+                                recipeList.add(new Recipe(
+                                        recipe.getString("title"),
+                                        recipe.getString("social_rank"),
+                                        recipe.getString("image_url"),
+                                        recipe.getString("source_url")
+                                ));
+                            }
+
+                            //Initialize the Recycler View adapter with context and dataset
+                            adapter = new RecipeRecyclerViewAdapter(getContext(),recipeList);
+
+                            //Add adapter to the recyclerView
+                            recipeRecyclerView.setAdapter(adapter);
+                        }
+                        catch (JSONException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+
+            }
+        });
+
+        //Using getInstance method of Singleton class and adding the StringRequest to RequestQueue
+        AppController.getInstance().addToRequestQueue(stringRequest,tag_string_req);
     }
 
     @Override

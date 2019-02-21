@@ -1,14 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context=".MainFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-</FrameLayout>
+    <!--EditText for the user to type in-->
+    <EditText
+        android:id="@+id/selectRecipeEditText"
+        android:drawableLeft="@drawable/ic_search_black_24dp"
+        android:layout_width="match_parent"
+        android:paddingLeft="10dp"
+        android:drawablePadding="10dp"
+        android:hint="@string/searchHint"
+        android:fontFamily="@font/khula_light"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:maxLines="1"
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        android:background="@drawable/edit_text_border"
+        android:layout_marginRight="20dp"/>
+
+    <!--Search Button which would display results accordingly-->
+    <Button
+        android:id="@+id/searchButton"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:textColor="#FFFFFF"
+        android:textAllCaps="false"
+        android:fontFamily="@font/khula_regular"
+        android:textSize="18sp"
+        android:layout_height="wrap_content"
+        android:text="@string/searchRecipeButton"
+        android:background="@color/colorAccent"/>
+
+    <!--RecyclerView: where the data would appear-->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recipeRecyclerView"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
