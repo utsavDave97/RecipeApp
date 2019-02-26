@@ -1,7 +1,9 @@
 package com.example.recipeapp;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,9 +16,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        MainFragment.OnFragmentInteractionListener
+        MainFragment.OnFragmentInteractionListener,
+        CreateYourOwn.OnFragmentInteractionListener,
+        Step1.OnFragmentInteractionListener,
+        Step2.OnFragmentInteractionListener,
+        Step3.OnFragmentInteractionListener
 {
     //Declaring the FragmentManager
     FragmentManager fm;
@@ -39,7 +47,7 @@ public class MainActivity extends AppCompatActivity
         if(savedInstanceState == null)
         {
             FragmentTransaction transaction = fm.beginTransaction();
-            transaction.replace(R.id.content,new MainFragment());
+            transaction.replace(R.id.content,new CreateYourOwn());
             transaction.commit();
         }
 
@@ -120,6 +128,23 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+
+        if(fragments != null)
+        {
+            for (Fragment f: fragments)
+            {
+                if(f instanceof Step1)
+                {
+                    f.onActivityResult(requestCode,resultCode,data);
+                }
+            }
+        }
     }
 
     @Override

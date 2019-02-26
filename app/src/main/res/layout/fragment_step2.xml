@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Linear Layout is the Parent Layout -->
+<LinearLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Step2">
+
+    <!-- Linear Layout to place child views horizontally -->
+    <LinearLayout
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- EditText for RecipeIngredient -->
+        <EditText
+            android:id="@+id/yourRecipeIngredientName"
+            android:layout_width="wrap_content"
+            android:paddingLeft="10dp"
+            android:layout_weight="0.85"
+            android:drawablePadding="10dp"
+            android:hint="@string/ingredient"
+            android:fontFamily="@font/khula_light"
+            android:layout_height="50dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginLeft="20dp"
+            android:maxLines="1"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            android:background="@drawable/edit_text_border"
+            android:layout_marginRight="10dp"/>
+
+        <!-- EditText for RecipeIngredientQuantity -->
+        <EditText
+            android:layout_weight="0.15"
+            android:id="@+id/yourRecipeIngredientQty"
+            android:layout_width="wrap_content"
+            android:paddingLeft="10dp"
+            android:drawablePadding="10dp"
+            android:hint="@string/qty"
+            android:fontFamily="@font/khula_light"
+            android:layout_height="50dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginLeft="20dp"
+            android:maxLines="1"
+            android:inputType="number|numberDecimal"
+            android:background="@drawable/edit_text_border"
+            android:layout_marginRight="20dp"/>
+
+    </LinearLayout>
+
+    <!-- ImageButton to add Ingredients to ListView-->
+    <ImageButton
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="25dp"
+        android:id="@+id/addIngredientButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:src="@drawable/ic_add_black_24dp"/>
+
+    <!-- ListView: where the ingredient and its quantity would be displayed after ImageButton clicked -->
+    <ListView
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
