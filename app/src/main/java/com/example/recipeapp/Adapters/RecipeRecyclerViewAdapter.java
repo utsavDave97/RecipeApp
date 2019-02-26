@@ -1,19 +1,20 @@
-package com.example.recipeapp;
+package com.example.recipeapp.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.recipeapp.Model.Recipe;
+import com.example.recipeapp.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
