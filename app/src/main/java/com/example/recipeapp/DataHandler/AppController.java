@@ -1,4 +1,4 @@
-package com.example.recipeapp;
+package com.example.recipeapp.DataHandler;
 
 import android.app.Application;
 import android.text.TextUtils;

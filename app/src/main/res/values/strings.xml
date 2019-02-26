@@ -20,4 +20,11 @@
     <string name="searchHint">Type Recipe Name</string>
     <string name="searchRecipeButton">Search</string>
 
+    <!-- Create Your Own Screen -->
+    <string name="finish">Finish</string>
+    <string name="nameHint">Recipe Name</string>
+    <string name="cookTime">Cook Time</string>
+    <string name="ingredient">Ingredient</string>
+    <string name="qty">Qty.</string>
+
 </resources>
