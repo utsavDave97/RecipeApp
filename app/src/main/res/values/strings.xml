@@ -27,4 +27,20 @@
     <string name="ingredient">Ingredient</string>
     <string name="qty">Qty.</string>
 
+    <!-- Calorie Calculator Screen -->
+    <string name="ageHint">Age</string>
+    <string name="female">Female</string>
+    <string name="male">Male</string>
+    <string name="gender">Gender</string>
+    <string name="weightHint">Weight</string>
+    <string name="pounds">Pounds</string>
+    <string name="kilos">Kilos</string>
+    <string name="heightHint">Height</string>
+    <string name="feet">Feet/Inches</string>
+    <string name="cms">Cms</string>
+    <string name="exercise">Exercise Level</string>
+    <string name="results">Results:</string>
+    <string name="calculate">Calculate</string>
+
+
 </resources>
