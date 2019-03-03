@@ -10,12 +10,14 @@ import android.os.Parcelable;
  * Also, it has various properties and different methods to set value to those properties or access them.
  * Also, it has 2 constructors which would be helpful in Adapter and SQLiteDatabase
  */
-public class Recipe implements Parcelable {
+public class Recipe implements Parcelable
+{
     //Declaring each property
     private String recipeName;
     private String ratings;
     private String recipeImage;
     private String recipeUrl;
+    private int id;
 
     /**
      * Empty Constructor
@@ -25,16 +27,17 @@ public class Recipe implements Parcelable {
     }
 
     /**
-     * Construct which would take in recipeName, recipeRatings & recipeImage
+     * Construct which would take in recipeName, recipeImage & recipeUrl
      * @param recipeName
-     * @param ratings
+     * @param recipeUrl
      * @param recipeImage
      */
-    public Recipe(String recipeName, String ratings, String recipeImage) {
+    public Recipe(String recipeName, String recipeImage, String recipeUrl) {
         this.recipeName = recipeName;
-        this.ratings = ratings;
+        this.recipeUrl = recipeUrl;
         this.recipeImage = recipeImage;
     }
+
 
     /**
      * Construct which would take in recipeName, recipeRatings, recipeImage & recipeURL
@@ -50,10 +53,20 @@ public class Recipe implements Parcelable {
         this.recipeUrl = recipeUrl;
     }
 
+
     /**
      * Providing Getters & Setters for each property
      * @return
      */
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String getRecipeUrl() {
         return recipeUrl;
     }
