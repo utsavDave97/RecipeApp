@@ -107,10 +107,15 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_home)
         {
             // Handle the home action
-            fragment = new MainFragment();
+            FragmentTransaction transaction = fm.beginTransaction();
+            transaction.replace(R.id.content,new MainFragment());
+            transaction.commit();
         }
         else if (id == R.id.nav_create)
         {
+            FragmentTransaction transaction = fm.beginTransaction();
+            transaction.replace(R.id.content,new CreateYourOwn());
+            transaction.commit();
         }
         else if (id == R.id.nav_calculator)
         {

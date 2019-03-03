@@ -18,7 +18,7 @@
         android:orientation="horizontal">
 
         <!-- EditText for RecipeIngredient -->
-        <EditText
+        <android.support.v7.widget.AppCompatAutoCompleteTextView
             android:id="@+id/yourRecipeIngredientName"
             android:layout_width="wrap_content"
             android:paddingLeft="10dp"
@@ -32,7 +32,8 @@
             android:maxLines="1"
             android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
             android:background="@drawable/edit_text_border"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginRight="10dp"
+            />
 
         <!-- EditText for RecipeIngredientQuantity -->
         <EditText

@@ -3,23 +3,50 @@ package com.example.recipeapp;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.AppCompatAutoCompleteTextView;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.example.recipeapp.Adapters.AutocompleteAdapter;
 import com.example.recipeapp.Adapters.ListViewAdapter;
+import com.example.recipeapp.Adapters.RecipeRecyclerViewAdapter;
+import com.example.recipeapp.DataHandler.AppController;
+import com.example.recipeapp.Model.MyRecipe;
+import com.example.recipeapp.Model.Recipe;
+import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.Step;
+import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -39,11 +66,21 @@ import java.util.ArrayList;
  * Use the {@link Step2#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Step2 extends Fragment implements Step
+public class Step2 extends Fragment implements BlockingStep
 {
     //Declaring EditTexts and ImageButton
-    EditText yourRecipeIngredientName, yourRecipeIngredientQty;
+    AppCompatAutoCompleteTextView yourRecipeIngredientName;
+    EditText yourRecipeIngredientQty;
     ImageButton addIngredientButton;
+
+    boolean isSelected = false;
+
+    //Declaring AutoCompleteTextViews, Handler and Url where the call would be made
+    private String URL_GET_INGREDIENT = "https://php.scweb.ca/~udave/apiRecipe/getIngredient.php?ingredient=",result;
+    private Handler handler;
+    private AutocompleteAdapter autocompleteAdapter;
+    private static final int TRIGGER_AUTO_COMPLETE = 100;
+    private static final int AUTO_COMPLETE_DELAY = 300;
 
     //Declaring Listview and ArrayList of ingredients & quantities
     ListView listView;
@@ -53,12 +90,10 @@ public class Step2 extends Fragment implements Step
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM1 = "myrecipe";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private MyRecipe mParam1;
 
     private OnFragmentInteractionListener mListener;
 
@@ -71,15 +106,13 @@ public class Step2 extends Fragment implements Step
      * this fragment using the provided parameters.
      *
      * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment Step2.
      */
     // TODO: Rename and change types and number of parameters
-    public static Step2 newInstance(String param1, String param2) {
+    public static Step2 newInstance(Parcelable param1) {
         Step2 fragment = new Step2();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putParcelable(ARG_PARAM1, param1);
         fragment.setArguments(args);
         return fragment;
     }
@@ -88,8 +121,7 @@ public class Step2 extends Fragment implements Step
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mParam1 = getArguments().getParcelable(ARG_PARAM1);
         }
     }
 
@@ -110,8 +142,59 @@ public class Step2 extends Fragment implements Step
         yourRecipeIngredientQty = view.findViewById(R.id.yourRecipeIngredientQty);
         listView = view.findViewById(R.id.listView);
 
+        autocompleteAdapter = new AutocompleteAdapter(getContext(),android.R.layout.simple_dropdown_item_1line);
+
+        yourRecipeIngredientName.setThreshold(1);
+        yourRecipeIngredientName.setAdapter(autocompleteAdapter);
+
+        yourRecipeIngredientName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+            {
+                isSelected = true;
+                yourRecipeIngredientName.setText(autocompleteAdapter.getObject(position));
+            }
+        });
+
+        yourRecipeIngredientName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+                isSelected = false;
+                handler.removeMessages(TRIGGER_AUTO_COMPLETE);
+                handler.sendEmptyMessageDelayed(TRIGGER_AUTO_COMPLETE,AUTO_COMPLETE_DELAY);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s)
+            {
+            }
+        });
+
+
+        handler = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                if(msg.what == TRIGGER_AUTO_COMPLETE)
+                {
+                    if(!TextUtils.isEmpty(yourRecipeIngredientName.getText()))
+                    {
+                        callApi(yourRecipeIngredientName.getText().toString());
+                    }
+                }
+                return false;
+            }
+        });
+
         //Setting up the Adapter which takes context, and two other ArrayList as parameters
         adapter = new ListViewAdapter(getContext(),ingredients,quantities);
+
 
         /**
          * Implementing onClickListener on addIngredient ImageButton
@@ -128,7 +211,7 @@ public class Step2 extends Fragment implements Step
             {
                 if(yourRecipeIngredientName.getText().toString().isEmpty())
                 {
-                    yourRecipeIngredientName.setError("Please enter ingredient.");
+                    yourRecipeIngredientName.setError("Please enter ingredient from drop down.");
                     yourRecipeIngredientName.requestFocus();
                 }
                 else if(yourRecipeIngredientQty.getText().toString().isEmpty())
@@ -138,11 +221,11 @@ public class Step2 extends Fragment implements Step
                 }
                 else
                 {
-                    ingredients.add(yourRecipeIngredientName.getText().toString());
-                    quantities.add(yourRecipeIngredientQty.getText().toString());
-                    adapter.notifyDataSetChanged();
-                    yourRecipeIngredientName.setText("");
-                    yourRecipeIngredientQty.setText("");
+                   ingredients.add(yourRecipeIngredientName.getText().toString());
+                   quantities.add(yourRecipeIngredientQty.getText().toString());
+                   adapter.notifyDataSetChanged();
+                   yourRecipeIngredientName.setText("");
+                   yourRecipeIngredientQty.setText("");
                 }
             }
         });
@@ -151,6 +234,60 @@ public class Step2 extends Fragment implements Step
         listView.setAdapter(adapter);
 
         return view;
+    }
+
+    private void callApi(String text)
+    {
+        String tag_string_req = "req_get_ingredient";
+
+        //Create a StringRequest with GET Method
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL_GET_INGREDIENT+text,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response)
+                    {
+
+                        List<String> stringList = new ArrayList<>();
+
+                        //Declare a JSON object
+                        JSONObject jsonObject;
+                        try
+                        {
+                            //Store the response inside the JSON Object
+                            jsonObject = new JSONObject(response);
+
+                            //Get the array of response and store it inside JSONArray
+                            JSONArray array = jsonObject.getJSONArray("results");
+
+                            //Loop through the array
+                            for (int i = 0; i < array.length(); i++)
+                            {
+                                //Get single object
+                                JSONObject recipe = array.getJSONObject(i);
+
+                                //Add that object inside dataSet withe the help of Recipe's constructor
+                                stringList.add(recipe.getString("ingredient"));
+                            }
+
+                            //Initialize the Recycler View adapter with context and dataset
+                            autocompleteAdapter.setData(stringList);
+                            autocompleteAdapter.notifyDataSetChanged();
+                        }
+                        catch (JSONException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+
+            }
+        });
+        //Using getInstance method of Singleton class and adding the StringRequest to RequestQueue
+        AppController.getInstance().addToRequestQueue(stringRequest,tag_string_req);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -177,10 +314,29 @@ public class Step2 extends Fragment implements Step
         mListener = null;
     }
 
+    /***
+     * This method is implemented if we want to make sure the user fills out all the required information
+     * before the user moves onto next step.
+     *
+     * Here inside this method it is verified that the user enters atleast one ingredient
+     * before moving on to next step.
+     *
+     * If all the requirements are met it would allow the user to move onto next step.
+     *
+     * @return VerificationError
+     */
     @Nullable
     @Override
-    public VerificationError verifyStep() {
-        return null;
+    public VerificationError verifyStep()
+    {
+        if(ingredients.isEmpty() == true)
+        {
+            return new VerificationError("Minimum 1 Ingredient");
+        }
+        else
+        {
+            return null;
+        }
     }
 
     @Override
@@ -190,6 +346,25 @@ public class Step2 extends Fragment implements Step
 
     @Override
     public void onError(@NonNull VerificationError error) {
+
+    }
+
+    @Override
+    public void onNextClicked(StepperLayout.OnNextClickedCallback callback)
+    {
+//        Log.d("NAME:",mParam1.getName()+"");
+//        Log.d("ImagePath:",mParam1.getImagePath()+"");
+//        Log.d("Time:",mParam1.getTime()+"");
+        callback.goToNextStep();
+    }
+
+    @Override
+    public void onCompleteClicked(StepperLayout.OnCompleteClickedCallback callback) {
+
+    }
+
+    @Override
+    public void onBackClicked(StepperLayout.OnBackClickedCallback callback) {
 
     }
 
