@@ -54,8 +54,8 @@ public class MainFragment extends Fragment
     Button searchButton;
 
     //Creating a URL which would be used when making Volley request
-    private String URL_GET_RECIPE = "https://www.food2fork.com/api/search?key="+Constants.API_KEY;
-    private String URL_FILTER_RECIPE = "https://www.food2fork.com/api/search?key="+Constants.API_KEY+"&q=";
+    private String URL_GET_RECIPE = "https://www.food2fork.com/api/search?key="+BuildConfig.API_KEY;
+    private String URL_FILTER_RECIPE = "https://www.food2fork.com/api/search?key="+BuildConfig.API_KEY+"&q=";
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -215,7 +215,6 @@ public class MainFragment extends Fragment
 
             }
         });
-
         //Using getInstance method of Singleton class and adding the StringRequest to RequestQueue
         AppController.getInstance().addToRequestQueue(stringRequest,tag_string_req);
     }

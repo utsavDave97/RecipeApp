@@ -3,6 +3,7 @@ package com.example.recipeapp;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,7 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.example.recipeapp.Model.MyRecipe;
 import com.stepstone.stepper.Step;
 import com.stepstone.stepper.VerificationError;
 
@@ -44,17 +48,16 @@ public class Step3 extends Fragment implements Step
     //Here the number 3 represents the number of the steps present
     private VerticalStepperItemView items[] = new VerticalStepperItemView[3];
 
-    //Declaring Buttons
+    //Declaring Buttons & Edittext
     private Button nextButtonStep1, nextButtonStep2,  previousButtonStep2, previousButtonStep3, finishButtonStep3;
+    private EditText step1EditText, step2EditText, step3EditText;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private MyRecipe mParam1;
 
     private OnFragmentInteractionListener mListener;
 
@@ -67,15 +70,13 @@ public class Step3 extends Fragment implements Step
      * this fragment using the provided parameters.
      *
      * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment Step3.
      */
     // TODO: Rename and change types and number of parameters
-    public static Step3 newInstance(String param1, String param2) {
+    public static Step3 newInstance(Parcelable param1) {
         Step3 fragment = new Step3();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putParcelable(ARG_PARAM1, param1);
         fragment.setArguments(args);
         return fragment;
     }
@@ -84,8 +85,7 @@ public class Step3 extends Fragment implements Step
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mParam1 = getArguments().getParcelable(ARG_PARAM1);
         }
     }
 
@@ -94,6 +94,10 @@ public class Step3 extends Fragment implements Step
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_step3, container, false);
+
+        step1EditText = view.findViewById(R.id.step1EditText);
+        step2EditText = view.findViewById(R.id.step2EditText);
+        step3EditText = view.findViewById(R.id.step3EditText);
 
         return view;
     }
@@ -126,14 +130,32 @@ public class Step3 extends Fragment implements Step
         nextButtonStep1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                items[0].nextStep();
+                if(step1EditText.getText().toString().isEmpty())
+                {
+                    step1EditText.setError("Please enter Step");
+                    step1EditText.requestFocus();
+                    return;
+                }
+                else
+                {
+                    items[0].nextStep();
+                }
             }
         });
 
         nextButtonStep2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                items[1].nextStep();
+                if(step2EditText.getText().toString().isEmpty())
+                {
+                    step2EditText.setError("Please enter Step");
+                    step2EditText.requestFocus();
+                    return;
+                }
+                else
+                {
+                    items[1].nextStep();
+                }
             }
         });
 
@@ -151,7 +173,21 @@ public class Step3 extends Fragment implements Step
             }
         });
 
-
+        finishButtonStep3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(step3EditText.getText().toString().isEmpty())
+                {
+                    step3EditText.setError("Please enter Step");
+                    step3EditText.requestFocus();
+                    return;
+                }
+                else
+                {
+                    Toast.makeText(getContext(),"Success",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -178,9 +214,21 @@ public class Step3 extends Fragment implements Step
         mListener = null;
     }
 
+    /***
+     * This method is implemented if we want to make sure the user fills out all the required information
+     * before the user moves onto next step.
+     *
+     * Here inside this method it is verified that the user enters all three steps
+     * before moving on to next step.
+     *
+     * If all the requirements are met it would allow the user to move onto next step.
+     *
+     * @return VerificationError
+     */
     @Nullable
     @Override
-    public VerificationError verifyStep() {
+    public VerificationError verifyStep()
+    {
         return null;
     }
 
