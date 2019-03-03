@@ -128,10 +128,7 @@ fabric.properties
 
 !/gradle/wrapper/gradle-wrapper.jar
 
-Constants.java
+RecipeApp/app/src/main/java/com/example/recipeapp/Constants.java
 
 # End of https://www.gitignore.io/api/androidstudio
-
-
-
 

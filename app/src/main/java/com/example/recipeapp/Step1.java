@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,8 +22,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TimePicker;
 
+import com.example.recipeapp.Model.MyRecipe;
 import com.myhexaville.smartimagepicker.ImagePicker;
+import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.Step;
+import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
 
 import java.io.ByteArrayOutputStream;
@@ -46,23 +50,23 @@ import java.util.Calendar;
  * Use the {@link Step1#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Step1 extends Fragment implements Step
+public class Step1 extends Fragment implements BlockingStep
 {
     //Declaring variables
     ImageView yourRecipeImage;
     EditText yourRecipeName, yourRecipeCookTime;
     private ImagePicker imagePicker;
     Bitmap bitmap;
-    String encoded_string;
+    String encoded_string, image_path;
+
+    public static Bundle bundle;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM1 = "myrecipe";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private MyRecipe mParam1;
 
     private OnFragmentInteractionListener mListener;
 
@@ -75,15 +79,12 @@ public class Step1 extends Fragment implements Step
      * this fragment using the provided parameters.
      *
      * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment Step1.
      */
-    // TODO: Rename and change types and number of parameters
-    public static Step1 newInstance(String param1, String param2) {
+    public static Step1 newInstance(Parcelable param1) {
         Step1 fragment = new Step1();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putParcelable(ARG_PARAM1, param1);
         fragment.setArguments(args);
         return fragment;
     }
@@ -92,8 +93,7 @@ public class Step1 extends Fragment implements Step
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mParam1 = getArguments().getParcelable(ARG_PARAM1);
         }
     }
 
@@ -107,6 +107,9 @@ public class Step1 extends Fragment implements Step
         //This line would ensure that the editText on the screen won't open keyboard as soon as the
         //screen launches.
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        mParam1 = new MyRecipe();
+
 
         //Getting the EditTexts and ImageView by its ID
         yourRecipeName = view.findViewById(R.id.yourRecipeName);
@@ -147,6 +150,8 @@ public class Step1 extends Fragment implements Step
 
                 timePickerDialog.show();
             }
+
+
         });
 
         /**
@@ -173,6 +178,7 @@ public class Step1 extends Fragment implements Step
         imagePicker = new ImagePicker(getActivity(),null,
                 imageUri->
                 {
+                    image_path = imageUri.toString();
                     yourRecipeImage.setImageURI(imageUri);
 //                    try
 //                    {
@@ -264,6 +270,7 @@ public class Step1 extends Fragment implements Step
 //            return null;
 //        }
 
+
         return  null;
     }
 
@@ -274,6 +281,22 @@ public class Step1 extends Fragment implements Step
 
     @Override
     public void onError(@NonNull VerificationError error) {
+
+    }
+
+    @Override
+    public void onNextClicked(StepperLayout.OnNextClickedCallback callback)
+    {
+        callback.goToNextStep();
+    }
+
+    @Override
+    public void onCompleteClicked(StepperLayout.OnCompleteClickedCallback callback) {
+
+    }
+
+    @Override
+    public void onBackClicked(StepperLayout.OnBackClickedCallback callback) {
 
     }
 
