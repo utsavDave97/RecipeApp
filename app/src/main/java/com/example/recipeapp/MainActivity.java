@@ -24,7 +24,8 @@ public class MainActivity extends AppCompatActivity
         CreateYourOwn.OnFragmentInteractionListener,
         Step1.OnFragmentInteractionListener,
         Step2.OnFragmentInteractionListener,
-        Step3.OnFragmentInteractionListener
+        Step3.OnFragmentInteractionListener,
+        FavoritesFragment.OnFragmentInteractionListener
 {
     //Declaring the FragmentManager
     FragmentManager fm;
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity
         if(savedInstanceState == null)
         {
             FragmentTransaction transaction = fm.beginTransaction();
-            transaction.replace(R.id.content,new CreateYourOwn());
+            transaction.replace(R.id.content,new MainFragment());
             transaction.commit();
         }
 
@@ -109,12 +110,14 @@ public class MainActivity extends AppCompatActivity
             // Handle the home action
             FragmentTransaction transaction = fm.beginTransaction();
             transaction.replace(R.id.content,new MainFragment());
+            transaction.addToBackStack(null);
             transaction.commit();
         }
         else if (id == R.id.nav_create)
         {
             FragmentTransaction transaction = fm.beginTransaction();
             transaction.replace(R.id.content,new CreateYourOwn());
+            transaction.addToBackStack(null);
             transaction.commit();
         }
         else if (id == R.id.nav_calculator)
@@ -125,6 +128,10 @@ public class MainActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_favorites)
         {
+            FragmentTransaction transaction = fm.beginTransaction();
+            transaction.replace(R.id.content,new FavoritesFragment());
+            transaction.addToBackStack(null);
+            transaction.commit();
         }
         else if (id == R.id.nav_settings)
         {

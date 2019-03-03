@@ -4,7 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +15,11 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.recipeapp.DataHandler.SQLiteHelper;
+import com.example.recipeapp.FavoritesFragment;
+import com.example.recipeapp.MainActivity;
 import com.example.recipeapp.Model.Recipe;
 import com.example.recipeapp.R;
 import com.squareup.picasso.Picasso;
@@ -48,48 +55,6 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
     {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.each_recipe_item,viewGroup,false);
 
-        final MyViewHolder myViewHolder = new MyViewHolder(view);
-
-        /**
-         * First: Getting access to favoriteButton with the help of view holder
-         * Second: Setting up onClickListener on that favorite button
-         * Third: If clicked it would change its state from unclicked to clicked
-         */
-        myViewHolder.favoriteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v)
-            {
-                if(clicked)
-                {
-                    clicked = false;
-                    myViewHolder.favoriteButton.setImageResource(R.drawable.ic_favorite_red);
-                }
-                else
-                {
-                    clicked  = true;
-                    myViewHolder.favoriteButton.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                }
-            }
-        });
-
-        final int a = i;
-
-        /**
-         * First: Getting access to shareButton with the help of view holder
-         * Second: Setting up onClickListener on that share button
-         * Third: If clicked it would pop-up a bottom sheet and the user can share recipe's url to others
-         */
-        myViewHolder.shareButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.putExtra(Intent.EXTRA_TEXT,"Check this Recipe out " + recipeList.get(a).getRecipeUrl());
-                intent.setType("text/plain");
-                context.startActivity(Intent.createChooser(intent,"Send To"));
-            }
-        });
-
-
         return new MyViewHolder(view);
     }
 
@@ -107,7 +72,7 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
          */
         myViewHolder.recipeNameTextView.setText(recipe.getRecipeName());
         myViewHolder.recipeRatingsTextView.setText("Ratings: "+recipe.getRatings());
-        Picasso.get().load(recipe.getRecipeImage()).into(myViewHolder.recipeImage);
+        Picasso.get().load(recipe.getRecipeImage()).fit().into(myViewHolder.recipeImage);
         myViewHolder.webButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,6 +82,50 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
                 if(intent.resolveActivity(context.getPackageManager()) != null){
                     context.startActivity(intent);
                 }
+            }
+        });
+
+        /**
+         * First: Getting access to favoriteButton with the help of view holder
+         * Second: Setting up onClickListener on that favorite button
+         * Third: If clicked it would change its state from unclicked to clicked
+         */
+        myViewHolder.favoriteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                if(clicked)
+                {
+                    MainActivity mainActivity = (MainActivity) context;
+                    clicked = false;
+                    myViewHolder.favoriteButton.setImageResource(R.drawable.ic_favorite_red);
+
+                    SQLiteHelper db = new SQLiteHelper(context);
+
+                    db.addFavorite(recipeList.get(i));
+
+                    Toast.makeText(context,"Added to Favorites",Toast.LENGTH_SHORT);
+                }
+                else
+                {
+                    clicked  = true;
+                    myViewHolder.favoriteButton.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                }
+            }
+        });
+
+        /**
+         * First: Getting access to shareButton with the help of view holder
+         * Second: Setting up onClickListener on that share button
+         * Third: If clicked it would pop-up a bottom sheet and the user can share recipe's url to others
+         */
+        myViewHolder.shareButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_TEXT,"Check this Recipe out " + recipeList.get(i).getRecipeUrl());
+                intent.setType("text/plain");
+                context.startActivity(Intent.createChooser(intent,"Send To"));
             }
         });
     }
