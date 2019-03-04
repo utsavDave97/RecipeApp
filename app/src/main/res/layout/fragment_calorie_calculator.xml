@@ -20,7 +20,7 @@
                 android:id="@+id/ageField"
                 style="@style/Widget.Roam.TextInputLayout"
                 android:layout_width="match_parent"
-                android:layout_height="63dp"
+                android:layout_height="70dp"
                 android:layout_margin="10dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
@@ -32,10 +32,7 @@
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/ageFieldText"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="220dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_height="match_parent"
                     android:fontFamily="@font/khula_lightt"
                     android:hint="@string/ageHint"
                     android:inputType="number"
@@ -94,17 +91,19 @@
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/weightField"
                 style="@style/Widget.Roam.TextInputLayout"
-                android:layout_width="100dp"
-                android:layout_height="63dp"
+                android:layout_width="0dp"
+                android:layout_height="70dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/weightFieldText"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:fontFamily="@font/khula_lightt"
                     android:hint="@string/weightHint"
                     android:inputType="number"
@@ -112,54 +111,22 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <RadioGroup
-                android:id="@+id/weightGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1.7"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/weightField"
-                app:layout_constraintTop_toBottomOf="@+id/textView">
-
-                <RadioButton
-                    android:id="@+id/pounds"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="45dp"
-                    android:fontFamily="@font/khula_regularr"
-                    android:text="@string/pounds"
-                    android:textColor="#000000"
-                    android:textSize="16sp" />
-
-                <RadioButton
-                    android:id="@+id/kilos"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/khula_regularr"
-                    android:text="@string/kilos"
-                    android:textColor="#000000"
-                    android:textSize="16sp" />
-
-            </RadioGroup>
-
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/heightField"
                 style="@style/Widget.Roam.TextInputLayout"
-                android:layout_width="100dp"
-                android:layout_height="63dp"
+                android:layout_width="0dp"
+                android:layout_height="70dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/weightField">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/heightFieldText"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:fontFamily="@font/khula_lightt"
                     android:hint="@string/heightHint"
                     android:inputType="number"
@@ -167,44 +134,12 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <RadioGroup
-                android:id="@+id/heightGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1.7"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/heightField"
-                app:layout_constraintTop_toBottomOf="@+id/weightGroup">
-
-                <RadioButton
-                    android:id="@+id/feet"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="25dp"
-                    android:fontFamily="@font/khula_regularr"
-                    android:text="@string/feet"
-                    android:textColor="#000000"
-                    android:textSize="16sp" />
-
-                <RadioButton
-                    android:id="@+id/cms"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/khula_regularr"
-                    android:text="@string/cms"
-                    android:textColor="#000000"
-                    android:textSize="16sp" />
-
-            </RadioGroup>
-
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
                 android:layout_weight="0.6"
                 android:fontFamily="@font/khula_regularr"
                 android:text="@string/exercise"
@@ -218,58 +153,140 @@
                 android:layout_width="154dp"
                 android:layout_height="30dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="1.4"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView2"
-                app:layout_constraintTop_toBottomOf="@+id/heightGroup" />
+                app:layout_constraintTop_toBottomOf="@+id/heightField" />
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="8dp"
+                android:background="@android:color/darker_gray"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/exerciseSpinner" />
 
             <TextView
-                android:id="@+id/textView4"
-                android:layout_width="match_parent"
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:fontFamily="@font/khula_lightt"
+                android:text="@string/maintain"
+                android:textColor="#4CAF50"
+                android:textSize="28sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view" />
+
+            <TextView
+                android:id="@+id/maintainTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
                 android:layout_marginEnd="8dp"
                 android:fontFamily="@font/khula_regularr"
-                android:text="@string/results"
+                android:text="------"
                 android:textColor="@color/black"
-                android:textSize="22sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                app:layout_constraintHorizontal_bias="0.718"
+                app:layout_constraintStart_toEndOf="@+id/textView3"
+                app:layout_constraintTop_toBottomOf="@+id/view" />
 
-            <EditText
-                android:id="@+id/editText"
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:ems="10"
-                android:inputType="textMultiLine"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:fontFamily="@font/khula_lightt"
+                android:text="@string/loss"
+                android:textColor="#FF5722"
+                android:textSize="28sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+                app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+            <TextView
+                android:id="@+id/lossTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/khula_regularr"
+                android:text="------"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.712"
+                app:layout_constraintStart_toEndOf="@+id/textView5"
+                app:layout_constraintTop_toBottomOf="@+id/maintainTextView" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/khula_lightt"
+                android:text="@string/extremeloss"
+                android:textColor="#F44336"
+                android:textSize="28sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+            <TextView
+                android:id="@+id/extremeLossTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="36dp"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/khula_regularr"
+                android:text="------"
+                android:textColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.51"
+                app:layout_constraintStart_toEndOf="@+id/textView6"
+                app:layout_constraintTop_toBottomOf="@+id/lossTextView" />
 
             <Button
                 android:id="@+id/calculateButton"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
+                android:layout_marginStart="76dp"
+                android:layout_marginTop="28dp"
                 android:background="@color/colorAccent"
                 android:fontFamily="@font/khula_regularr"
                 android:text="@string/calculate"
                 android:textAllCaps="false"
                 android:textColor="#FFFFFF"
                 android:textSize="23sp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editText" />
+                app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+            <Button
+                android:id="@+id/resetButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="8dp"
+                android:background="@color/colorAccent"
+                android:fontFamily="@font/khula_regularr"
+                android:text="@string/reset"
+                android:textAllCaps="false"
+                android:textColor="#FFFFFF"
+                android:textSize="23sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.489"
+                app:layout_constraintStart_toEndOf="@+id/calculateButton"
+                app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
         </android.support.constraint.ConstraintLayout>
 

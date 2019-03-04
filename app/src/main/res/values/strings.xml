@@ -41,6 +41,10 @@
     <string name="exercise">Exercise Level</string>
     <string name="results">Results:</string>
     <string name="calculate">Calculate</string>
+    <string name="maintain">Maintain:</string>
+    <string name="loss">Fat Loss:</string>
+    <string name="extremeloss">Extreme Fat Loss:</string>
+    <string name="reset">Reset</string>
 
 
 </resources>
