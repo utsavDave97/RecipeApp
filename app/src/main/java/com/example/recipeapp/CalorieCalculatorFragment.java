@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -30,7 +33,7 @@ import java.util.List;
  * @author utsav
  * @date 3rd-Mar-2019
  */
-public class CalorieCalculatorFragment extends Fragment implements AdapterView.OnItemSelectedListener
+public class CalorieCalculatorFragment extends Fragment
 {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -39,9 +42,13 @@ public class CalorieCalculatorFragment extends Fragment implements AdapterView.O
 
     //Declaring EditTexts, Button, TextViews, RadioGroups & Spinner
     Spinner exerciseSpinner;
-    Button calculateButton;
-    RadioGroup genderGroup, weightGroup, heightGroup;
+    Button calculateButton, resetButton;
+    TextView maintainTextView, lossTextView, extremeLossTextView;
+    RadioGroup genderGroup;
     TextInputEditText weightFieldText, heightFieldText, ageFieldText;
+
+    //Declaring double variable for Basal Metabolic Rate (BMR)
+    double bmr, weight, height, age, genderValue, exercise,maintain,fatLossTemp, fatLoss, extremeLossTemp, extremeLoss;
 
 
     // TODO: Rename and change types of parameters
@@ -87,8 +94,19 @@ public class CalorieCalculatorFragment extends Fragment implements AdapterView.O
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_calorie_calculator, container, false);
 
+        //initializing each widget with its ID
         exerciseSpinner = view.findViewById(R.id.exerciseSpinner);
+        calculateButton = view.findViewById(R.id.calculateButton);
+        resetButton = view.findViewById(R.id.resetButton);
+        weightFieldText = view.findViewById(R.id.weightFieldText);
+        heightFieldText = view.findViewById(R.id.heightFieldText);
+        ageFieldText = view.findViewById(R.id.ageFieldText);
+        maintainTextView = view.findViewById(R.id.maintainTextView);
+        lossTextView = view.findViewById(R.id.lossTextView);
+        extremeLossTextView = view.findViewById(R.id.extremeLossTextView);
+        genderGroup = view.findViewById(R.id.genderGroup);
 
+        //Creating a list of values which would be used in Spinner Adapter
         List<String> spinnerList = new ArrayList<String>();
         spinnerList.add("Little/No Exercise");
         spinnerList.add("Light Exercise");
@@ -96,14 +114,147 @@ public class CalorieCalculatorFragment extends Fragment implements AdapterView.O
         spinnerList.add("Hard Exercise");
         spinnerList.add("Very Hard Exercise");
 
+        //Initializing the adapter
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_dropdown_item,spinnerList);
 
+        //Setting the adapter with Spinner
         exerciseSpinner.setAdapter(spinnerAdapter);
+
+        /***
+         * This method would give us the value of item selected inside the Spinner
+         * @param parent
+         * @param view
+         * @param position
+         * @param id
+         */
+        exerciseSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                Log.w("POSITION:",position+"");
+
+                switch (position)
+                {
+                    case 0:
+                        exercise = 1.2;
+                        break;
+                    case 1:
+                        exercise = 1.375;
+                        break;
+                    case 2:
+                        exercise = 1.55;
+                        break;
+                    case 3:
+                        exercise = 1.725;
+                        break;
+                    case 4:
+                        exercise = 1.9;
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        /***
+         * Setting up listener on gender RadioGroup, through which we can know if the user selected
+         * male or female
+         */
+        genderGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId)
+            {
+                View radioButton = genderGroup.findViewById(checkedId);
+
+                int index = genderGroup.indexOfChild(radioButton);
+
+                switch (index)
+                {
+                    case 0:
+                        genderValue = 5;
+                        break;
+                    case 1:
+                        genderValue = -161;
+                        break;
+                }
+            }
+        });
+
+        //Setting onClickListener on Calculate Button
+        calculateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                //Conditions to check if age, weight, height or gender is empty
+                if(TextUtils.isEmpty(ageFieldText.getText()))
+                {
+                    ageFieldText.setError("Please enter age.");
+                    ageFieldText.requestFocus();
+                    return;
+                }
+                if(TextUtils.isEmpty(weightFieldText.getText()))
+                {
+                    weightFieldText.setError("Please enter weight.");
+                    weightFieldText.requestFocus();
+                    return;
+                }
+                if(TextUtils.isEmpty(heightFieldText.getText()))
+                {
+                    heightFieldText.setError("Please enter height.");
+                    heightFieldText.requestFocus();
+                    return;
+                }
+
+                if(genderValue == 0)
+                {
+                    Toast.makeText(getContext(),"Please select gender",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                //Assigning weight, height and age their respective values
+                weight = Double.parseDouble(weightFieldText.getText().toString());
+                height = Double.parseDouble(heightFieldText.getText().toString());
+                age = Double.parseDouble(ageFieldText.getText().toString());
+
+                //Calculating BMR by using Mifflin St.Jeor formula
+                bmr = (10 * weight) + (6.25 * height) - (5 * age) + genderValue;
+
+                //Calculating maintain
+                maintain = bmr * exercise;
+
+                //Calculating fat loss by reducing 20% from maintain value
+                fatLossTemp = maintain * 0.20;
+                fatLoss = maintain - fatLossTemp;
+
+                //Calculating extreme fat loss by reducing 40% from maintain value
+                extremeLossTemp = maintain * 0.40;
+                extremeLoss = maintain - extremeLossTemp;
+
+                //Assigning values to respective TextViews to  show results
+                maintainTextView.setText(String.valueOf(String.format("%.2f",maintain))+" per/day");
+                lossTextView.setText(String.valueOf(String.format("%.2f",fatLoss))+" per/day");
+                extremeLossTextView.setText(String.valueOf(String.format("%.2f",extremeLoss))+" per/day");
+            }
+        });
+
+        //Setting onClickListener on Reset Button
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ageFieldText.setText("");
+                weightFieldText.setText("");
+                heightFieldText.setText("");
+                maintainTextView.setText("N/A");
+                lossTextView.setText("N/A");
+                extremeLossTextView.setText("N/A");
+            }
+        });
 
         return view;
     }
-
-
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -129,25 +280,6 @@ public class CalorieCalculatorFragment extends Fragment implements AdapterView.O
         mListener = null;
     }
 
-    /***
-     * This method would give us the value of item selected inside the Spinner
-     * @param parent
-     * @param view
-     * @param position
-     * @param id
-     */
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
-    {
-        String item = parent.getItemAtPosition(position).toString();
-
-        Toast.makeText(getContext(),"Item Selected:"+item,Toast.LENGTH_SHORT);
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
 
     /**
      * This interface must be implemented by activities that contain this
