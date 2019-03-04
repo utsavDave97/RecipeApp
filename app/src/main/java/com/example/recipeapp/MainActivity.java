@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity
         if(savedInstanceState == null)
         {
             FragmentTransaction transaction = fm.beginTransaction();
-            transaction.replace(R.id.content,new CalorieCalculatorFragment());
+            transaction.replace(R.id.content,new MainFragment());
             transaction.commit();
         }
 
