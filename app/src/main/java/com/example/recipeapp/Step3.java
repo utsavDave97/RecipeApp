@@ -203,12 +203,14 @@ public class Step3 extends Fragment implements BlockingStep
                 else
                 {
                     description += step3EditText.getText().toString()+"\n";
+
+                    //Get the description and set it to MyRecipe Object
                     mParam1.setDescription(description);
 
-                    Log.w("Description:",mParam1.getDescription()+"");
-
+                    //Add the Recipe to SQLite Database
                     db.addMyRecipe(mParam1);
 
+                    //Display a Toast Message showing that recipe has been added
                     Toast.makeText(getContext(),"Recipe Added",Toast.LENGTH_SHORT).show();
                     step3EditText.setText("");
                     step2EditText.setText("");
@@ -216,10 +218,6 @@ public class Step3 extends Fragment implements BlockingStep
                 }
             }
         });
-
-
-
-
     }
 
     // TODO: Rename method, update argument and hook method into UI event
