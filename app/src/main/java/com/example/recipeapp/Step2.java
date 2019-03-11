@@ -354,12 +354,35 @@ public class Step2 extends Fragment implements BlockingStep
     @Override
     public void onNextClicked(StepperLayout.OnNextClickedCallback callback)
     {
-        Log.w("Name:",mParam1.getName()+"");
-        Log.w("Name:",mParam1.getTime()+"");
-        Log.w("Name:",mParam1.getImagePath()+"");
+
+        //First create a JSON object for ingredients
+        JSONObject jsonIngredient = new JSONObject();
+        //Surround it by try-catch
+        try {
+            //Inside that JSON object put an Array of ingredients
+            jsonIngredient.put("ingredients",new JSONArray(ingredients));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        //First create a JSON object for quantities
+        JSONObject jsonQuantity = new JSONObject();
+        //Surround it by try-catch
+        try {
+            //Inside that JSON object put an Array of quantities
+            jsonQuantity.put("quantites",new JSONArray(quantities));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        //get ingredients and quantites string and set it to MyRecipe Object
+        String ingredients = jsonIngredient.toString();
+        String quantities = jsonQuantity.toString();
 
         mParam1.setIngredients(ingredients);
         mParam1.setQuantites(quantities);
+
+        //Go to next step
         callback.goToNextStep();
     }
 
