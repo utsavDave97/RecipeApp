@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import java.util.ArrayList;
 
-public class MyRecipe implements Parcelable
+public class MyRecipe
 {
     private String imagePath;
     private String name;
@@ -12,6 +12,8 @@ public class MyRecipe implements Parcelable
     private ArrayList<String> ingredients;
     private ArrayList<String> quantites;
     private String description;
+
+    private static MyRecipe instance;
     
     public String getDescription() {
         return description;
@@ -61,42 +63,17 @@ public class MyRecipe implements Parcelable
         this.quantites = quantites;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    private MyRecipe()
+    {
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.imagePath);
-        dest.writeString(this.name);
-        dest.writeString(this.time);
-        dest.writeStringList(this.ingredients);
-        dest.writeStringList(this.quantites);
-        dest.writeString(this.description);
-    }
-
-    public MyRecipe() {
-    }
-
-    protected MyRecipe(Parcel in) {
-        this.imagePath = in.readString();
-        this.name = in.readString();
-        this.time = in.readString();
-        this.ingredients = in.createStringArrayList();
-        this.quantites = in.createStringArrayList();
-        this.description = in.readString();
-    }
-
-    public static final Parcelable.Creator<MyRecipe> CREATOR = new Parcelable.Creator<MyRecipe>() {
-        @Override
-        public MyRecipe createFromParcel(Parcel source) {
-            return new MyRecipe(source);
+    public static MyRecipe getInstance()
+    {
+        if(instance == null)
+        {
+            instance = new MyRecipe();
         }
+        return instance;
+    }
 
-        @Override
-        public MyRecipe[] newArray(int size) {
-            return new MyRecipe[size];
-        }
-    };
 }

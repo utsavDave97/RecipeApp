@@ -1,12 +1,16 @@
 package com.example.recipeapp;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +58,7 @@ public class MainFragment extends Fragment
     Button searchButton;
 
     //Creating a URL which would be used when making Volley request
-    private String URL_GET_RECIPE = "https://www.food2fork.com/api/search?key="+BuildConfig.API_KEY;
+    private String URL_GET_RECIPE;
     private String URL_FILTER_RECIPE = "https://www.food2fork.com/api/search?key="+BuildConfig.API_KEY+"&q=";
 
     // TODO: Rename parameter arguments, choose names that match
@@ -117,12 +121,52 @@ public class MainFragment extends Fragment
         selectRecipeEditText = view.findViewById(R.id.selectRecipeEditText);
         searchButton = view.findViewById(R.id.searchButton);
 
-        //recipeRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
-
         //Setting up LayoutManager for the RecyclerView
-        recipeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        if(getResources().getConfiguration().isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_XLARGE))
+        {
+            if(SettingsFragment.gridViewSwitch != null)
+            {
+                if(SettingsFragment.gridViewSwitch.isChecked())
+                {
+                    recipeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+                }
+                else
+                {
+                    recipeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                }
+            }
+        }
+        else
+        {
+            recipeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        }
 
         recipeList.clear();
+
+        if(SettingsFragment.sp != null)
+        {
+            Log.w("Under SP",SettingsFragment.sp.getString(getString(R.string.sortbykey),"1"));
+            Log.w("URL",URL_GET_RECIPE+"");
+
+            if(SettingsFragment.sp.getString(getString(R.string.sortbykey),"1").equals(""))
+            {
+                URL_GET_RECIPE = "https://www.food2fork.com/api/search?key="+BuildConfig.API_KEY;
+            }
+            else if(SettingsFragment.sp.getString(getString(R.string.sortbykey),"1").equals("r"))
+            {
+                URL_GET_RECIPE = "https://www.food2fork.com/api/search?key="+BuildConfig.API_KEY+"&sort=r";
+            }
+            else if(SettingsFragment.sp.getString(getString(R.string.sortbykey),"1").equals("t"))
+            {
+                URL_GET_RECIPE = "https://www.food2fork.com/api/search?key="+BuildConfig.API_KEY+"&sort=t";
+                Log.w("URL under if:",URL_GET_RECIPE+"");
+            }
+        }
+        else
+        {
+            URL_GET_RECIPE = "https://www.food2fork.com/api/search?key="+BuildConfig.API_KEY;
+        }
+
 
         //This would be populate data inside RecyclerView
         initializeData();
