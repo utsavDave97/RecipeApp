@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="sortby_array">
+        <item>@string/defaultV</item>
+        <item>@string/ratings</item>
+        <item>@string/trendiness</item>
+    </string-array>
+    <string-array name="sortby_array_values">
+        <item></item>
+        <item>r</item>
+        <item>t</item>
+    </string-array>
+</resources>

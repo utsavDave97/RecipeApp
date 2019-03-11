@@ -20,6 +20,8 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.recipeapp.Model.MyRecipe;
@@ -108,7 +110,7 @@ public class Step1 extends Fragment implements BlockingStep
         //screen launches.
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-        mParam1 = new MyRecipe();
+        mParam1 = MyRecipe.getInstance();
 
 
         //Getting the EditTexts and ImageView by its ID
@@ -140,13 +142,14 @@ public class Step1 extends Fragment implements BlockingStep
                  * Initializing the TimePickerDialog and implementing onTimeSet method
                  * Results would be showed in CookTime EditText after the Time has been selected
                  */
+
                 TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute)
                     {
                         yourRecipeCookTime.setText(hourOfDay + ":" + minute);
                     }
-                },hour,min,false);
+                },hour,min,true);
 
                 timePickerDialog.show();
             }
@@ -180,6 +183,14 @@ public class Step1 extends Fragment implements BlockingStep
                 {
                     image_path = imageUri.toString();
                     yourRecipeImage.setImageURI(imageUri);
+
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),imageUri);
+
+                        encoded_string = imageToString(bitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 //                    try
 //                    {
 //                        bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),imageUri);
@@ -287,6 +298,9 @@ public class Step1 extends Fragment implements BlockingStep
     @Override
     public void onNextClicked(StepperLayout.OnNextClickedCallback callback)
     {
+        mParam1.setName(yourRecipeName.getText().toString());
+        mParam1.setTime(yourRecipeCookTime.getText().toString());
+        mParam1.setImagePath(encoded_string);
         callback.goToNextStep();
     }
 

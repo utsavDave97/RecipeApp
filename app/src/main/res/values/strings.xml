@@ -46,5 +46,11 @@
     <string name="extremeloss">Extreme Fat Loss:</string>
     <string name="reset">Reset</string>
 
+    <!-- Calorie Calculator Screen -->
+    <string name="sortbykey">sortByKey</string>
+    <string name="defaultV">Default</string>
+    <string name="ratings">Ratings</string>
+    <string name="trendiness">Trendiness</string>
+
 
 </resources>

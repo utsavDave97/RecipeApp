@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="General"
+        >
+
+        <SwitchPreference
+            android:key="gridViewKey"
+            android:title="Grid View"
+            android:summary="Switch to grid view on home screen"
+            android:defaultValue="false"
+            />
+        <ListPreference
+            android:title="Sort By"
+            android:key="@string/sortbykey"
+            android:summary="Sort recipes by ratings/trendiness"
+            android:entries="@array/sortby_array"
+            android:defaultValue="@string/defaultV"
+            android:entryValues="@array/sortby_array_values"
+            />
+
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

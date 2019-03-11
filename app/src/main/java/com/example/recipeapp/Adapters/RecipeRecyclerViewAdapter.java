@@ -71,7 +71,7 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
          *
          */
         myViewHolder.recipeNameTextView.setText(recipe.getRecipeName());
-        myViewHolder.recipeRatingsTextView.setText("Ratings: "+recipe.getRatings());
+        myViewHolder.recipeRatingsTextView.setText(String.format("Ratings: %.2f", recipe.getRatings()));
         Picasso.get().load(recipe.getRecipeImage()).fit().into(myViewHolder.recipeImage);
         myViewHolder.webButton.setOnClickListener(new View.OnClickListener() {
             @Override
