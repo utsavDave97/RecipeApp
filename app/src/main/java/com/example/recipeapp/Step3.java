@@ -171,7 +171,7 @@ public class Step3 extends Fragment implements BlockingStep
                 }
                 else
                 {
-                    description = step2EditText.getText().toString()+"\n";
+                    description += step2EditText.getText().toString()+"\n";
                     items[1].nextStep();
                 }
             }
@@ -202,30 +202,22 @@ public class Step3 extends Fragment implements BlockingStep
                 }
                 else
                 {
-                    description = step3EditText.getText().toString()+"\n";
-                    Toast.makeText(getContext(),"Success",Toast.LENGTH_SHORT).show();
+                    description += step3EditText.getText().toString()+"\n";
+                    mParam1.setDescription(description);
+
+                    Log.w("Description:",mParam1.getDescription()+"");
+
+                    db.addMyRecipe(mParam1);
+
+                    Toast.makeText(getContext(),"Recipe Added",Toast.LENGTH_SHORT).show();
+                    step3EditText.setText("");
+                    step2EditText.setText("");
+                    step1EditText.setText("");
                 }
             }
         });
 
-        JSONObject jsonIngredient = new JSONObject();
-        try {
-            jsonIngredient.put("ingredients",new JSONArray(mParam1.getIngredients()));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
-        JSONObject jsonQuantity = new JSONObject();
-        try {
-            jsonQuantity.put("quantites",new JSONArray(mParam1.getQuantites()));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        String ingredients = jsonIngredient.toString();
-        String quantities = jsonQuantity.toString();
-
-        mParam1.setDescription(description);
 
 
     }
