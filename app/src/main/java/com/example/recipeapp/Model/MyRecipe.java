@@ -9,8 +9,8 @@ public class MyRecipe
     private String imagePath;
     private String name;
     private String time;
-    private ArrayList<String> ingredients;
-    private ArrayList<String> quantites;
+    private String ingredients;
+    private String quantites;
     private String description;
 
     private static MyRecipe instance;
@@ -47,19 +47,19 @@ public class MyRecipe
         this.time = time;
     }
 
-    public ArrayList<String> getIngredients() {
+    public String getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(ArrayList<String> ingredients) {
+    public void setIngredients(String ingredients) {
         this.ingredients = ingredients;
     }
 
-    public ArrayList<String> getQuantites() {
+    public String getQuantites() {
         return quantites;
     }
 
-    public void setQuantites(ArrayList<String> quantites) {
+    public void setQuantites(String quantites) {
         this.quantites = quantites;
     }
 
