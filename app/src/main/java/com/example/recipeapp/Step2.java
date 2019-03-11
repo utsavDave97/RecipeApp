@@ -132,6 +132,8 @@ public class Step2 extends Fragment implements BlockingStep
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_step2, container, false);
 
+        mParam1 = MyRecipe.getInstance();
+
         //This line would ensure that the editText on the screen won't open keyboard as soon as the
         //screen launches.
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -352,9 +354,12 @@ public class Step2 extends Fragment implements BlockingStep
     @Override
     public void onNextClicked(StepperLayout.OnNextClickedCallback callback)
     {
-//        Log.d("NAME:",mParam1.getName()+"");
-//        Log.d("ImagePath:",mParam1.getImagePath()+"");
-//        Log.d("Time:",mParam1.getTime()+"");
+        Log.w("Name:",mParam1.getName()+"");
+        Log.w("Name:",mParam1.getTime()+"");
+        Log.w("Name:",mParam1.getImagePath()+"");
+
+        mParam1.setIngredients(ingredients);
+        mParam1.setQuantites(quantities);
         callback.goToNextStep();
     }
 
@@ -364,8 +369,9 @@ public class Step2 extends Fragment implements BlockingStep
     }
 
     @Override
-    public void onBackClicked(StepperLayout.OnBackClickedCallback callback) {
-
+    public void onBackClicked(StepperLayout.OnBackClickedCallback callback)
+    {
+        callback.goToPrevStep();
     }
 
     /**

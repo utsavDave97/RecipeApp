@@ -32,6 +32,7 @@ public class SQLiteHelper extends SQLiteOpenHelper
      */
 
     public static final String TABLE_FAVORITES = "favorites";
+    public static final String TABLE_MYRECIPE = "myrecipe";
 
     /**
      * CREATE column names

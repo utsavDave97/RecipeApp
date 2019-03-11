@@ -26,7 +26,8 @@ public class MainActivity extends AppCompatActivity
         Step2.OnFragmentInteractionListener,
         Step3.OnFragmentInteractionListener,
         FavoritesFragment.OnFragmentInteractionListener,
-        CalorieCalculatorFragment.OnFragmentInteractionListener
+        CalorieCalculatorFragment.OnFragmentInteractionListener,
+        SettingsFragment.OnFragmentInteractionListener
 {
     //Declaring the FragmentManager
     FragmentManager fm;
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity
         if(savedInstanceState == null)
         {
             FragmentTransaction transaction = fm.beginTransaction();
-            transaction.replace(R.id.content,new MainFragment());
+            transaction.replace(R.id.content,new CreateYourOwn());
             transaction.commit();
         }
 
@@ -140,6 +141,10 @@ public class MainActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_settings)
         {
+            FragmentTransaction transaction = fm.beginTransaction();
+            transaction.replace(R.id.content,new SettingsFragment());
+            transaction.addToBackStack(null);
+            transaction.commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

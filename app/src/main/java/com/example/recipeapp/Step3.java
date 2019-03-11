@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.recipeapp.DataHandler.SQLiteHelper;
 import com.example.recipeapp.Model.MyRecipe;
+import com.stepstone.stepper.BlockingStep;
 import com.stepstone.stepper.Step;
+import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import moe.feng.common.stepperview.VerticalStepperItemView;
 
@@ -42,11 +50,14 @@ import moe.feng.common.stepperview.VerticalStepperItemView;
  * Use the {@link Step3#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Step3 extends Fragment implements Step
+public class Step3 extends Fragment implements BlockingStep
 {
     //Creating an Array of VerticalStepper
     //Here the number 3 represents the number of the steps present
     private VerticalStepperItemView items[] = new VerticalStepperItemView[3];
+
+    String description;
+    SQLiteHelper db;
 
     //Declaring Buttons & Edittext
     private Button nextButtonStep1, nextButtonStep2,  previousButtonStep2, previousButtonStep3, finishButtonStep3;
@@ -95,6 +106,10 @@ public class Step3 extends Fragment implements Step
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_step3, container, false);
 
+        db= new SQLiteHelper(getContext());
+
+        mParam1 = MyRecipe.getInstance();
+
         step1EditText = view.findViewById(R.id.step1EditText);
         step2EditText = view.findViewById(R.id.step2EditText);
         step3EditText = view.findViewById(R.id.step3EditText);
@@ -129,7 +144,8 @@ public class Step3 extends Fragment implements Step
         //Setting onClickListeners on above declared buttons
         nextButtonStep1.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View v)
+            {
                 if(step1EditText.getText().toString().isEmpty())
                 {
                     step1EditText.setError("Please enter Step");
@@ -138,6 +154,7 @@ public class Step3 extends Fragment implements Step
                 }
                 else
                 {
+                    description = step1EditText.getText().toString()+"\n";
                     items[0].nextStep();
                 }
             }
@@ -154,6 +171,7 @@ public class Step3 extends Fragment implements Step
                 }
                 else
                 {
+                    description = step2EditText.getText().toString()+"\n";
                     items[1].nextStep();
                 }
             }
@@ -184,10 +202,32 @@ public class Step3 extends Fragment implements Step
                 }
                 else
                 {
+                    description = step3EditText.getText().toString()+"\n";
                     Toast.makeText(getContext(),"Success",Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
+        JSONObject jsonIngredient = new JSONObject();
+        try {
+            jsonIngredient.put("ingredients",new JSONArray(mParam1.getIngredients()));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JSONObject jsonQuantity = new JSONObject();
+        try {
+            jsonQuantity.put("quantites",new JSONArray(mParam1.getQuantites()));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String ingredients = jsonIngredient.toString();
+        String quantities = jsonQuantity.toString();
+
+        mParam1.setDescription(description);
+
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -240,6 +280,22 @@ public class Step3 extends Fragment implements Step
     @Override
     public void onError(@NonNull VerificationError error) {
 
+    }
+
+    @Override
+    public void onNextClicked(StepperLayout.OnNextClickedCallback callback) {
+
+    }
+
+    @Override
+    public void onCompleteClicked(StepperLayout.OnCompleteClickedCallback callback) {
+
+    }
+
+    @Override
+    public void onBackClicked(StepperLayout.OnBackClickedCallback callback)
+    {
+        callback.goToPrevStep();
     }
 
     /**
