@@ -74,7 +74,7 @@ public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteRecycl
                                  * Grab that items id
                                  * remove from the database the location at that items id
                                  */
-                                db.deleteLocation(recipeList.get(recipe).getId());
+                                db.deleteFavoriteRecipe(recipeList.get(recipe).getRecipeName());
 
                                 //We also remove the location from the ArrayList
                                 recipeList.remove(recipe);

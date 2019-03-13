@@ -67,7 +67,7 @@ public class SQLiteHelper extends SQLiteOpenHelper
 
     public static final String CREATE_FAVORITES_TABLE = "CREATE TABLE " +
             TABLE_FAVORITES + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
-            + KEY_NAME + " TEXT, " + KEY_IMAGE + " TEXT,"
+            + KEY_NAME + " TEXT UNIQUE, " + KEY_IMAGE + " TEXT,"
             + KEY_URL + " TEXT)";
 
     public static final String CREATE_MYRECIPE_TABLE = "CREATE TABLE " +
@@ -138,6 +138,7 @@ public class SQLiteHelper extends SQLiteOpenHelper
         if(cursor.moveToFirst()){
             do{
                 favoriteList.add(new Recipe(
+                        cursor.getInt(0),
                         cursor.getString(1),
                         cursor.getString(2),
                         cursor.getString(3)));
@@ -147,35 +148,43 @@ public class SQLiteHelper extends SQLiteOpenHelper
         return favoriteList;
     }
 
-//    public ArrayList<MyRecipe> getAllMyRecipes()
-//    {
-//        ArrayList<MyRecipe> myRecipeList = new ArrayList<>();
-//        String query = "SELECT * FROM " + TABLE_MYRECIPE;
-//        SQLiteDatabase db = this.getReadableDatabase();
-//        Cursor cursor = db.rawQuery(query, null);
-//        if(cursor.moveToFirst()){
-//            do{
-//                myRecipeList.add(new Recipe(
-//                        cursor.getString(1),
-//                        cursor.getString(2),
-//                        cursor.getString(3),
-//                        cursor.getString(4),
-//                        cursor.getString(5),
-//                        cursor.getString(6)));
-//            }while(cursor.moveToNext());
-//        }
-//        db.close();
-//        return myRecipeList;
-//    }
+    public ArrayList<MyRecipe> getAllMyRecipes()
+    {
+        ArrayList<MyRecipe> myRecipeList = new ArrayList<>();
+        String query = "SELECT * FROM " + TABLE_MYRECIPE;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor.moveToFirst()){
+            do{
+                myRecipeList.add(new MyRecipe(
+                        cursor.getInt(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getString(4),
+                        cursor.getString(5),
+                        cursor.getString(6)));
+            }while(cursor.moveToNext());
+        }
+        db.close();
+        return myRecipeList;
+    }
 
     /**
      * DELETE OPERATIONS
      */
 
-    public void deleteLocation(int location){
+    public void deleteFavoriteRecipe(String recipe){
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_FAVORITES, KEY_ID + "=?",
-                new String[]{String.valueOf(location)});
+                new String[]{recipe});
+        db.close();
+    }
+
+    public void deleteMyRecipe(int recipe){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_MYRECIPE, KEY_ID + "=?",
+                new String[]{String.valueOf(recipe)});
         db.close();
     }
 }

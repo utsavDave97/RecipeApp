@@ -32,7 +32,8 @@ public class Recipe implements Parcelable
      * @param recipeUrl
      * @param recipeImage
      */
-    public Recipe(String recipeName, String recipeImage, String recipeUrl) {
+    public Recipe(int id,String recipeName, String recipeImage, String recipeUrl) {
+        this.id = id;
         this.recipeName = recipeName;
         this.recipeUrl = recipeUrl;
         this.recipeImage = recipeImage;
