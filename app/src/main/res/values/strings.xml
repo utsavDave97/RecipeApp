@@ -52,5 +52,8 @@
     <string name="ratings">Ratings</string>
     <string name="trendiness">Trendiness</string>
 
+    <!-- Calorie Calculator Screen -->
+    <string name="imageTransition">imageTransition</string>
+
 
 </resources>

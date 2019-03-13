@@ -27,7 +27,9 @@ public class MainActivity extends AppCompatActivity
         Step3.OnFragmentInteractionListener,
         FavoritesFragment.OnFragmentInteractionListener,
         CalorieCalculatorFragment.OnFragmentInteractionListener,
-        SettingsFragment.OnFragmentInteractionListener
+        SettingsFragment.OnFragmentInteractionListener,
+        YourRecipe.OnFragmentInteractionListener,
+        EachRecipe.OnFragmentInteractionListener
 {
     //Declaring the FragmentManager
     FragmentManager fm;
@@ -50,7 +52,7 @@ public class MainActivity extends AppCompatActivity
         if(savedInstanceState == null)
         {
             FragmentTransaction transaction = fm.beginTransaction();
-            transaction.replace(R.id.content,new CreateYourOwn());
+            transaction.replace(R.id.content,new MainFragment());
             transaction.commit();
         }
 
@@ -131,6 +133,10 @@ public class MainActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_your_recipes)
         {
+            FragmentTransaction transaction = fm.beginTransaction();
+            transaction.replace(R.id.content,new YourRecipe());
+            transaction.addToBackStack(null);
+            transaction.commit();
         }
         else if (id == R.id.nav_favorites)
         {
