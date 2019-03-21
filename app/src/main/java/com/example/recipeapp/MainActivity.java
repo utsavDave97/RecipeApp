@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity
         //This would enable the custom Title on Action Bar
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        getSupportActionBar().show();
+
         //Initializing the FragmentManager
         fm = getSupportFragmentManager();
 
@@ -52,7 +54,7 @@ public class MainActivity extends AppCompatActivity
         if(savedInstanceState == null)
         {
             FragmentTransaction transaction = fm.beginTransaction();
-            transaction.replace(R.id.content,new MainFragment());
+            transaction.replace(R.id.content,new FavoritesFragment());
             transaction.commit();
         }
 

@@ -56,4 +56,18 @@
     <string name="imageTransition">imageTransition</string>
 
 
+    <!-- Settings Screen -->
+    <string name="legal_title">Legal</string>
+    <string name="credits">Credits</string>
+    <string name="license">License</string>
+
+    <string name="contact_title">Contact</string>
+    <string name="sendfeedback">Send Feedback</string>
+    <string name="technicalsupport">Technical Support</string>
+    <string name="comevisitus">Come Visit Us</string>
+    <string name="feedbackSummary">Report technical issues or suggest new features</string>
+    <string name="supportSummary">Call us anytime to get technical support</string>
+    <string name="visitusSummary">Come see us in person</string>
+
+
 </resources>
