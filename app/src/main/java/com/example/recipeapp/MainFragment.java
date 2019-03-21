@@ -22,6 +22,8 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.ethanhua.skeleton.Skeleton;
+import com.ethanhua.skeleton.SkeletonScreen;
 import com.example.recipeapp.Adapters.RecipeRecyclerViewAdapter;
 import com.example.recipeapp.DataHandler.AppController;
 import com.example.recipeapp.Model.Recipe;
@@ -114,6 +116,8 @@ public class MainFragment extends Fragment
         //screen launches.
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
+
+
         //Getting RecyclerView by its ID
         recipeRecyclerView = view.findViewById(R.id.recipeRecyclerView);
 
@@ -140,6 +144,16 @@ public class MainFragment extends Fragment
         {
             recipeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         }
+
+        /**
+         * Skeleton View added
+         * This would give a light gray animation letting user know that the content is loading
+         */
+        SkeletonScreen skeletonScreen = Skeleton.bind(recipeRecyclerView)
+                .adapter(adapter)
+                .load(R.layout.skeleton_view)
+                .color(R.color.shimmerColor)
+                .show();
 
         recipeList.clear();
 

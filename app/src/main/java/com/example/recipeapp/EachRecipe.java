@@ -7,6 +7,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -81,6 +84,25 @@ public class EachRecipe extends Fragment
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_each_recipe, container, false);
+
+        Toolbar toolbar = view.findViewById(R.id.toolbarEach);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+
+
+        if(toolbar != null)
+        {
+            ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
+        }
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
+
+        toolbar.setTitle(mParam2.getName());
+
 
         eachRecipeImage = view.findViewById(R.id.eachRecipeImage);
         eachRecipeName = view.findViewById(R.id.eachRecipeName);

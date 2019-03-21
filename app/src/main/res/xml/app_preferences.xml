@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory
-        android:title="General"
-        >
+        android:title="General">
 
         <SwitchPreference
             android:key="gridViewKey"
@@ -11,6 +12,7 @@
             android:summary="Switch to grid view on home screen"
             android:defaultValue="false"
             />
+
         <ListPreference
             android:title="Sort By"
             android:key="@string/sortbykey"
@@ -20,6 +22,41 @@
             android:entryValues="@array/sortby_array_values"
             />
 
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/contact_title">
+
+        <Preference
+            app:key="feedback"
+            android:title="@string/sendfeedback"
+            android:summary="@string/feedbackSummary"/>
+
+        <Preference
+            app:key="technical"
+            android:title="@string/technicalsupport"
+            android:summary="@string/supportSummary"
+            />
+
+        <Preference
+            app:key="visitus"
+            android:title="@string/comevisitus"
+            android:summary="@string/visitusSummary"
+            />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/legal_title">
+
+        <Preference
+            app:key="credits"
+            android:title="@string/credits" />
+
+        <Preference
+            app:key="license"
+            android:title="@string/license"
+            />
 
     </PreferenceCategory>
 

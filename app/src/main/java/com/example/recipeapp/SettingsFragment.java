@@ -1,15 +1,15 @@
 package com.example.recipeapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v14.preference.SwitchPreference;
 import android.support.v4.app.Fragment;
-import android.support.v7.preference.ListPreference;
+import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
-import android.util.Log;
 
 
 /**
@@ -23,6 +23,8 @@ import android.util.Log;
 public class SettingsFragment extends PreferenceFragmentCompat
 {
     public static SwitchPreference gridViewSwitch;
+
+    String[] address = {"recipeapp@gmail.com"};
 
     public static SharedPreferences sp;
 
@@ -78,6 +80,86 @@ public class SettingsFragment extends PreferenceFragmentCompat
         sp = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         String sortByType = sp.getString(getString(R.string.sortbykey),"1");
+
+        Preference feedbackPreference = findPreference("feedback");
+        Preference supportPreference = findPreference("technical");
+        Preference visitusPreference = findPreference("visitus");
+        Preference creditPreference = findPreference("credits");
+        Preference licensePreference = findPreference("license");
+
+        feedbackPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                intent.setData(Uri.parse("mailto:"));
+                intent.putExtra(Intent.EXTRA_EMAIL,address);
+
+                if(intent.resolveActivity(getActivity().getPackageManager()) != null)
+                {
+                    startActivity(intent);
+                    return  true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+        });
+
+
+        supportPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("tel:+15196779787"));
+                intent.putExtra(Intent.EXTRA_EMAIL,address);
+
+                if(intent.resolveActivity(getActivity().getPackageManager()) != null)
+                {
+                    startActivity(intent);
+                    return  true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+        });
+
+        visitusPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                Uri location = Uri.parse("geo:0,0?q=42.248204,-83.019325(St clair college");
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(location);
+
+                if(intent.resolveActivity(getActivity().getPackageManager()) != null)
+                {
+                    startActivity(intent);
+                    return  true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        });
+
+        creditPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                return false;
+            }
+        });
+
+        licensePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                return false;
+            }
+        });
 
     }
 
