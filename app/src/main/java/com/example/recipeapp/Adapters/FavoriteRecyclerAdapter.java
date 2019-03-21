@@ -61,7 +61,7 @@ public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteRecycl
                         .setTitle("Delete")
                         .setMessage("Are you sure you want to delete?")
                         .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 //Grab the current location in the list
@@ -70,26 +70,26 @@ public class FavoriteRecyclerAdapter extends RecyclerView.Adapter<FavoriteRecycl
                                 //Open the database
                                 SQLiteHelper db = new SQLiteHelper(context);
                                 /**
-                                 * look in the locations list and grab the item at 'location'
-                                 * Grab that items id
-                                 * remove from the database the location at that items id
+                                 * look in the recipe list and grab the item at 'recipe'
+                                 * Grab that items name
+                                 * remove from the database the recipe at that items id
                                  */
                                 db.deleteFavoriteRecipe(recipeList.get(recipe).getRecipeName());
 
-                                //We also remove the location from the ArrayList
+                                //We also remove the recipe from the ArrayList
                                 recipeList.remove(recipe);
 
                                 //Refresh the ArrayList
                                 notifyItemRemoved(recipe);
                             }
                         })
-                        .setNegativeButton("No", null)
+                        .setNegativeButton("Cancel", null)
                         .show();
                 return true;
             }
         });
 
-        return new FavoriteRecyclerAdapter.MyViewHolder(view);
+        return myViewHolder;
     }
 
     //Replace the contents of view with the Dataset values

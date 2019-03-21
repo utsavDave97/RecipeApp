@@ -104,7 +104,7 @@ public class RecipeRecyclerViewAdapter extends RecyclerView.Adapter<RecipeRecycl
 
                     db.addFavorite(recipeList.get(i));
 
-                    Toast.makeText(context,"Added to Favorites",Toast.LENGTH_SHORT);
+                    Toast.makeText(context,"Added to Favorites",Toast.LENGTH_SHORT).show();
                 }
                 else
                 {

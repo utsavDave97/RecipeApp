@@ -176,7 +176,7 @@ public class SQLiteHelper extends SQLiteOpenHelper
 
     public void deleteFavoriteRecipe(String recipe){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_FAVORITES, KEY_ID + "=?",
+        db.delete(TABLE_FAVORITES, KEY_NAME + "=?",
                 new String[]{recipe});
         db.close();
     }
