@@ -13,47 +13,38 @@ import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Toast;
-
+import android.widget.Spinner;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.recipeapp.Adapters.AutocompleteAdapter;
 import com.example.recipeapp.Adapters.ListViewAdapter;
-import com.example.recipeapp.Adapters.RecipeRecyclerViewAdapter;
 import com.example.recipeapp.DataHandler.AppController;
 import com.example.recipeapp.Model.MyRecipe;
-import com.example.recipeapp.Model.Recipe;
 import com.stepstone.stepper.BlockingStep;
-import com.stepstone.stepper.Step;
 import com.stepstone.stepper.StepperLayout;
 import com.stepstone.stepper.VerificationError;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  * @author utsav
  * @date 22-Feb-2019
  *
- *  This is fragment class is the class which would show view and process information for Step 2 of
+ *  This fragment class is the class which would show view and process information for Step 2 of
  *  inside Create Your Own Recipe form.
  *
  *  This fragment class also implements Step Library, this library is used to create step-by-step
@@ -72,6 +63,8 @@ public class Step2 extends Fragment implements BlockingStep
     AppCompatAutoCompleteTextView yourRecipeIngredientName;
     EditText yourRecipeIngredientQty;
     ImageButton addIngredientButton;
+    Spinner unitSpinner;
+    String unit;
 
     boolean isSelected = false;
 
@@ -87,6 +80,7 @@ public class Step2 extends Fragment implements BlockingStep
     ArrayAdapter<String> adapter;
     ArrayList<String> ingredients = new ArrayList<String>();
     ArrayList<String> quantities = new ArrayList<String>();
+    ArrayList<String> units = new ArrayList<String>();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -143,6 +137,54 @@ public class Step2 extends Fragment implements BlockingStep
         yourRecipeIngredientName = view.findViewById(R.id.yourRecipeIngredientName);
         yourRecipeIngredientQty = view.findViewById(R.id.yourRecipeIngredientQty);
         listView = view.findViewById(R.id.listView);
+        unitSpinner = view.findViewById(R.id.unitSpinner);
+
+        //Creating a list of values which would be used in Spinner Adapter
+        List<String> unitList = new ArrayList<String>();
+        unitList.add("tsp");
+        unitList.add("tbsp");
+        unitList.add("cup");
+        unitList.add("1/2 cup");
+
+        //Initializing the adapter
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_spinner_dropdown_item,unitList);
+
+        //Setting the adapter with Spinner
+        unitSpinner.setAdapter(spinnerAdapter);
+
+        /***
+         * This method would give us the value of item selected inside the Spinner
+         * @param parent
+         * @param view
+         * @param position
+         * @param id
+         */
+        unitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                switch (position)
+                {
+                    case 0:
+                        unit = "tsp";
+                        break;
+                    case 1:
+                        unit = "tbsp";
+                        break;
+                    case 2:
+                        unit = "1/2 cup";
+                        break;
+                    case 3:
+                        unit = "cup";
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         autocompleteAdapter = new AutocompleteAdapter(getContext(),android.R.layout.simple_dropdown_item_1line);
 
@@ -195,7 +237,7 @@ public class Step2 extends Fragment implements BlockingStep
         });
 
         //Setting up the Adapter which takes context, and two other ArrayList as parameters
-        adapter = new ListViewAdapter(getContext(),ingredients,quantities);
+        adapter = new ListViewAdapter(getContext(),ingredients,quantities,units);
 
 
         /**
@@ -225,6 +267,7 @@ public class Step2 extends Fragment implements BlockingStep
                 {
                    ingredients.add(yourRecipeIngredientName.getText().toString());
                    quantities.add(yourRecipeIngredientQty.getText().toString());
+                   units.add(unit);
                    adapter.notifyDataSetChanged();
                    yourRecipeIngredientName.setText("");
                    yourRecipeIngredientQty.setText("");
@@ -351,6 +394,11 @@ public class Step2 extends Fragment implements BlockingStep
 
     }
 
+    /***
+     * As soon as the next is clicked on this step, it would store ingredients, quantities, units
+     * inside the object and than this object is passed onto Step 3.
+     * @param callback
+     */
     @Override
     public void onNextClicked(StepperLayout.OnNextClickedCallback callback)
     {
@@ -375,12 +423,24 @@ public class Step2 extends Fragment implements BlockingStep
             e.printStackTrace();
         }
 
+        //First create a JSON object for units
+        JSONObject jsonUnit = new JSONObject();
+        //Surround it by try-catch
+        try {
+            //Inside that JSON object put an Array of units
+            jsonUnit.put("units",new JSONArray(units));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         //get ingredients and quantites string and set it to MyRecipe Object
         String ingredients = jsonIngredient.toString();
         String quantities = jsonQuantity.toString();
+        String unitss = jsonUnit.toString();
 
         mParam1.setIngredients(ingredients);
         mParam1.setQuantites(quantities);
+        mParam1.setUnit(unitss);
 
         //Go to next step
         callback.goToNextStep();

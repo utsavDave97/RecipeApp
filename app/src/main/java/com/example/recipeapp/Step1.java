@@ -191,20 +191,19 @@ public class Step1 extends Fragment implements BlockingStep
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-//                    try
-//                    {
-//                        bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),imageUri);
-//                        encoded_string = imageToString(bitmap);
-//                    }
-//                    catch (IOException e)
-//                    {
-//                        e.printStackTrace();
-//                    }
                 });
 
         return view;
     }
 
+    /***
+     * The purpose of this method is to convert bitmap into 64 bit String.
+     *
+     * It would return a String, and than this String is stored inside object which later on is
+     * inserted inside db.
+     * @param bitmap
+     * @return String
+     */
     private String imageToString(Bitmap bitmap)
     {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -221,8 +220,9 @@ public class Step1 extends Fragment implements BlockingStep
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode,resultCode,data);
         imagePicker.handleActivityResult(resultCode,requestCode,data);
     }
 
@@ -268,21 +268,18 @@ public class Step1 extends Fragment implements BlockingStep
     @Override
     public VerificationError verifyStep()
     {
-//        if(yourRecipeName.getText().toString().isEmpty())
-//        {
-//            return new VerificationError("Enter Recipe Name");
-//        }
-//        else if(yourRecipeImage.getDrawable().toString().equals("android.graphics.drawable.BitmapDrawable@d5f4bba"))
-//        {
-//            return new VerificationError("Upload Recipe Image");
-//        }
-//        else
-//        {
-//            return null;
-//        }
-
-
-        return  null;
+        if(yourRecipeName.getText().toString().isEmpty())
+        {
+            return new VerificationError("Enter Recipe Name");
+        }
+        else if(yourRecipeImage.getDrawable().toString().equals("android.graphics.drawable.BitmapDrawable@d5f4bba"))
+        {
+            return new VerificationError("Upload Recipe Image");
+        }
+        else
+        {
+            return null;
+        }
     }
 
     @Override
@@ -295,6 +292,11 @@ public class Step1 extends Fragment implements BlockingStep
 
     }
 
+    /***
+     * As soon as the next is clicked on this step, it would store name, time and image string
+     * inside the object and than this object is passed onto Step 2.
+     * @param callback
+     */
     @Override
     public void onNextClicked(StepperLayout.OnNextClickedCallback callback)
     {

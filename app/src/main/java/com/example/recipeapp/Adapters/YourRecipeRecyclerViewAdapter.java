@@ -61,15 +61,20 @@ public class YourRecipeRecyclerViewAdapter extends RecyclerView.Adapter<YourReci
 
         MyViewHolder myViewHolder = new MyViewHolder(view);
 
+        //Make the each view clickable
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
+                //Get the current position by getAdapterPosition
                 int myRecipe = myViewHolder.getAdapterPosition();
 
+                //on each click, open a new Fragment with passing the object to that fragment
                 FragmentTransaction transaction = fm.beginTransaction();
-
-                transaction.replace(R.id.content, EachRecipe.newInstance(myRecipeList.get(myRecipe))).addSharedElement(myViewHolder.yourMyRecipeImage,"imageTransition").addToBackStack(null).commit();
+                transaction
+                        .replace(R.id.content, EachRecipe.newInstance(myRecipeList.get(myRecipe)))
+                        .addToBackStack(null)
+                        .commit();
             }
         });
 
@@ -80,15 +85,18 @@ public class YourRecipeRecyclerViewAdapter extends RecyclerView.Adapter<YourReci
     @Override
     public void onBindViewHolder(@NonNull YourRecipeRecyclerViewAdapter.MyViewHolder myViewHolder, int i)
     {
+        //Get the current object
         MyRecipe myRecipe = myRecipeList.get(i);
 
+        //Set the RecipeName
         myViewHolder.yourMyRecipeName.setText(myRecipe.getName());
 
+        //Set the RecipeImage
         byte[] imageBytes = Base64.decode(myRecipe.getImagePath(),Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes,0,imageBytes.length);
-
         myViewHolder.yourMyRecipeImage.setImageBitmap(bitmap);
 
+        //Set onClickListener on each menu of each card
         myViewHolder.optionsMyRecipe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,12 +109,16 @@ public class YourRecipeRecyclerViewAdapter extends RecyclerView.Adapter<YourReci
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId())
                         {
+                            //If the user selects Delete
                             case R.id.deleteMyRecipe:
 
+                                //get the context
                                 db = new SQLiteHelper(context);
 
+                                //delete the recipe from DB
                                 db.deleteMyRecipe(myRecipeList.get(i).getId());
 
+                                //Remove the recipe from RecyclerView
                                 myRecipeList.remove(i);
                                 notifyItemRemoved(i);
 

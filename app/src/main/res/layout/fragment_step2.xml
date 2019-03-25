@@ -22,7 +22,7 @@
             android:id="@+id/yourRecipeIngredientName"
             android:layout_width="wrap_content"
             android:paddingLeft="10dp"
-            android:layout_weight="0.85"
+            android:layout_weight="0.70"
             android:drawablePadding="10dp"
             android:hint="@string/ingredient"
             android:fontFamily="@font/khula_light"
@@ -51,6 +51,13 @@
             android:inputType="number|numberDecimal"
             android:background="@drawable/edit_text_border"
             android:layout_marginRight="20dp"/>
+
+        <Spinner
+            android:id="@+id/unitSpinner"
+            android:layout_width="wrap_content"
+            android:layout_weight="0.15"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"/>
 
     </LinearLayout>
 
