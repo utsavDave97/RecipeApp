@@ -11,8 +11,12 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.support.v7.preference.PreferenceManager;
 
-
 /**
+ * @author utsav
+ * @date 14 March 2019
+ *
+ * This Fragment class is for Settings Screen. It would
+ *
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link SettingsFragment.OnFragmentInteractionListener} interface
@@ -22,6 +26,7 @@ import android.support.v7.preference.PreferenceManager;
  */
 public class SettingsFragment extends PreferenceFragmentCompat
 {
+    //
     public static SwitchPreference gridViewSwitch;
 
     String[] address = {"recipeapp@gmail.com"};
@@ -73,20 +78,27 @@ public class SettingsFragment extends PreferenceFragmentCompat
     @Override
     public void onCreatePreferences(Bundle bundle, String s)
     {
+        //Get the preferences from XML file
         addPreferencesFromResource(R.xml.app_preferences);
 
+        //Declaring and initializing the switch preference
         gridViewSwitch = (android.support.v14.preference.SwitchPreference) findPreference("gridViewKey");
 
         sp = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         String sortByType = sp.getString(getString(R.string.sortbykey),"1");
 
+        //Declaring and initializing preferences from Settings screen
         Preference feedbackPreference = findPreference("feedback");
         Preference supportPreference = findPreference("technical");
         Preference visitusPreference = findPreference("visitus");
         Preference creditPreference = findPreference("credits");
         Preference licensePreference = findPreference("license");
 
+        /**
+         * Setting on preference click listener on Feedback preference\
+         * This preference would open up Mail Intent
+         */
         feedbackPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -108,6 +120,10 @@ public class SettingsFragment extends PreferenceFragmentCompat
         });
 
 
+        /**
+         * Setting on preference click listener on support preference
+         * This preference would open up Call Intent
+         */
         supportPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -128,6 +144,10 @@ public class SettingsFragment extends PreferenceFragmentCompat
             }
         });
 
+        /**
+         * Setting on preference click listener on support preference
+         * This preference would open up Location Intent
+         */
         visitusPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -147,6 +167,10 @@ public class SettingsFragment extends PreferenceFragmentCompat
             }
         });
 
+        /**
+         * Setting on preference click listener on support preference
+         * This preference would open Credit Fragment
+         */
         creditPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -154,6 +178,10 @@ public class SettingsFragment extends PreferenceFragmentCompat
             }
         });
 
+        /**
+         * Setting on preference click listener on support preference
+         * This preference would open License Fragment
+         */
         licensePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
@@ -162,18 +190,6 @@ public class SettingsFragment extends PreferenceFragmentCompat
         });
 
     }
-
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState)
-//    {
-//        // Inflate the layout for this fragment
-//        View view = inflater.inflate(R.layout.fragment_settings, container, false);
-//
-//
-//
-//        return view;
-//    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

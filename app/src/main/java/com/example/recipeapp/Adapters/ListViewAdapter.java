@@ -27,14 +27,16 @@ public class ListViewAdapter extends ArrayAdapter
     private Context context;
     private ArrayList<String> ingredients;
     private ArrayList<String> quantities;
+    private ArrayList<String> units;
 
     //Creating a constructor with context and arrayLists
-    public ListViewAdapter(Context context, ArrayList<String> ingredients, ArrayList<String> quantities)
+    public ListViewAdapter(Context context, ArrayList<String> ingredients, ArrayList<String> quantities, ArrayList<String> units)
     {
         super(context,-1,ingredients);
         this.context = context;
         this.ingredients = ingredients;
         this.quantities = quantities;
+        this.units = units;
     }
 
 
@@ -61,11 +63,13 @@ public class ListViewAdapter extends ArrayAdapter
         //Getting IDs and assigning them
         TextView ingredient = view.findViewById(R.id.ingredient);
         TextView qty = view.findViewById(R.id.qty);
+        TextView unit = view.findViewById(R.id.unit);
         ImageButton removeButton = view.findViewById(R.id.removeButton);
 
         //Setting text to TextViews on the basis of data passed
         ingredient.setText(ingredients.get(position));
         qty.setText(quantities.get(position));
+        unit.setText(units.get(position));
 
         /**
          * Setting onClickListener on RemoveButton

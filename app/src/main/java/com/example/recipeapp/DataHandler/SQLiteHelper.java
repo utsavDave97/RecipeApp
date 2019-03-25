@@ -59,6 +59,7 @@ public class SQLiteHelper extends SQLiteOpenHelper
     public static final String KEY_RECIPE_IMAGE = "recipeImage";
     public static final String KEY_RECIPE_INGREDIENTS = "ingredients";
     public static final String KEY_RECIPE_QUANTITIES = "quantites";
+    public static final String KEY_RECIPE_UNIT = "unit";
     public static final String KEY_RECIPE_DESCRIPTION = "description";
 
     /**
@@ -73,7 +74,7 @@ public class SQLiteHelper extends SQLiteOpenHelper
     public static final String CREATE_MYRECIPE_TABLE = "CREATE TABLE " +
             TABLE_MYRECIPE + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
             + KEY_RECIPE_NAME + " TEXT, " + KEY_RECIPE_TIME + " TEXT," + KEY_RECIPE_IMAGE + " TEXT,"
-            + KEY_RECIPE_INGREDIENTS + " TEXT," + KEY_RECIPE_QUANTITIES + " TEXT," +KEY_RECIPE_DESCRIPTION + " TEXT)";
+            + KEY_RECIPE_INGREDIENTS + " TEXT," + KEY_RECIPE_QUANTITIES + " TEXT,"  + KEY_RECIPE_UNIT + " TEXT," +KEY_RECIPE_DESCRIPTION + " TEXT)";
 
     public SQLiteHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -122,6 +123,7 @@ public class SQLiteHelper extends SQLiteOpenHelper
         values.put(KEY_RECIPE_IMAGE,myRecipe.getImagePath());
         values.put(KEY_RECIPE_INGREDIENTS,myRecipe.getIngredients());
         values.put(KEY_RECIPE_QUANTITIES,myRecipe.getQuantites());
+        values.put(KEY_RECIPE_UNIT,myRecipe.getUnit());
         values.put(KEY_RECIPE_DESCRIPTION,myRecipe.getDescription());
         db.insert(TABLE_MYRECIPE, null, values);
         db.close();
@@ -163,7 +165,8 @@ public class SQLiteHelper extends SQLiteOpenHelper
                         cursor.getString(3),
                         cursor.getString(4),
                         cursor.getString(5),
-                        cursor.getString(6)));
+                        cursor.getString(6),
+                        cursor.getString(7)));
             }while(cursor.moveToNext());
         }
         db.close();

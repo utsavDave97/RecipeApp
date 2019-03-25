@@ -3,9 +3,19 @@ package com.example.recipeapp.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * @author utsav
+ * @date 10-Mar-2019
+ *
+ * This Singleton class is the Model class for the Recipes created by the user inside
+ * Create Your Own steps.
+ *
+ * This class implements Parcelable class, so that data of this object could be passed from one
+ * fragment to another.
+ */
 public class MyRecipe implements Parcelable
 {
-
+    //Declare all the properties
     private int id;
     private String imagePath;
     private String name;
@@ -13,19 +23,43 @@ public class MyRecipe implements Parcelable
     private String ingredients;
     private String quantites;
     private String description;
+    private String unit;
 
-    public MyRecipe(int id,String name, String time, String imagePath, String ingredients, String quantites, String description) {
+    /***
+     * Create a Constructor matching the properties
+     * @param id
+     * @param name
+     * @param time
+     * @param imagePath
+     * @param ingredients
+     * @param quantites
+     * @param unit
+     * @param description
+     */
+    public MyRecipe(int id,String name, String time, String imagePath, String ingredients, String quantites,String unit, String description) {
         this.id = id;
         this.imagePath = imagePath;
         this.name = name;
         this.time = time;
         this.ingredients = ingredients;
         this.quantites = quantites;
+        this.unit = unit;
         this.description = description;
     }
 
     private static MyRecipe instance;
-    
+
+    /**
+     * Providing Getters & Setters for each property
+     */
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -82,6 +116,7 @@ public class MyRecipe implements Parcelable
         this.id = id;
     }
 
+    //Empty Constructor
     private MyRecipe()
     {
     }
@@ -109,6 +144,7 @@ public class MyRecipe implements Parcelable
         dest.writeString(this.ingredients);
         dest.writeString(this.quantites);
         dest.writeString(this.description);
+        dest.writeString(this.unit);
     }
 
     protected MyRecipe(Parcel in) {
@@ -119,6 +155,7 @@ public class MyRecipe implements Parcelable
         this.ingredients = in.readString();
         this.quantites = in.readString();
         this.description = in.readString();
+        this.unit = in.readString();
     }
 
     public static final Creator<MyRecipe> CREATOR = new Creator<MyRecipe>() {

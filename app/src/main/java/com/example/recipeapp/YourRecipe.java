@@ -16,8 +16,10 @@ import com.example.recipeapp.Model.MyRecipe;
 
 import java.util.ArrayList;
 
-
 /**
+ * @author utsav
+ * @date 12 March 2019
+ *
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link YourRecipe.OnFragmentInteractionListener} interface
@@ -27,6 +29,7 @@ import java.util.ArrayList;
  */
 public class YourRecipe extends Fragment
 {
+    //Declare RecyclerView, SQLite, ArrayList and Adapter
     RecyclerView yourRecipeRecyclerView;
     SQLiteHelper db;
     ArrayList<MyRecipe> myRecipeList;
@@ -83,14 +86,19 @@ public class YourRecipe extends Fragment
 
         ((MainActivity)getActivity()).getSupportActionBar().show();
 
+        //Find the recyclerview by its ID
         yourRecipeRecyclerView = view.findViewById(R.id.yourRecipeRecyclerView);
 
+        //Initialize the SQLite
         db = new SQLiteHelper(getContext());
 
+        //populate the ArrayList of MyRecipe by calling getAllRecipes method of db.
         myRecipeList = db.getAllMyRecipes();
 
+        //Initialize the adapter
         adapter = new YourRecipeRecyclerViewAdapter(getContext(),myRecipeList,getActivity().getSupportFragmentManager());
 
+        //Set the LayoutManager and Adapter to the recyclerView
         yourRecipeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         yourRecipeRecyclerView.setAdapter(adapter);
 

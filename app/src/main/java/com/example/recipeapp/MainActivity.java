@@ -18,6 +18,12 @@ import android.view.MenuItem;
 
 import java.util.List;
 
+/**
+ * @author utsav
+ * @date 24th Feb 2019
+ *
+ * This class is the MainActivity class. Inside this class all the fragments are opened.
+ */
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         MainFragment.OnFragmentInteractionListener,
@@ -54,7 +60,7 @@ public class MainActivity extends AppCompatActivity
         if(savedInstanceState == null)
         {
             FragmentTransaction transaction = fm.beginTransaction();
-            transaction.replace(R.id.content,new FavoritesFragment());
+            transaction.replace(R.id.content,new MainFragment());
             transaction.commit();
         }
 
@@ -116,41 +122,52 @@ public class MainActivity extends AppCompatActivity
             // Handle the home action
             FragmentTransaction transaction = fm.beginTransaction();
             transaction.replace(R.id.content,new MainFragment());
+            transaction.setCustomAnimations(R.anim.slide_left,R.anim.slide_right);
             transaction.addToBackStack(null);
             transaction.commit();
         }
         else if (id == R.id.nav_create)
         {
+            // Handle the Create Your Own action
             FragmentTransaction transaction = fm.beginTransaction();
             transaction.replace(R.id.content,new CreateYourOwn());
+            transaction.setCustomAnimations(R.anim.slide_left,R.anim.slide_right);
             transaction.addToBackStack(null);
             transaction.commit();
         }
         else if (id == R.id.nav_calculator)
         {
+            // Handle the Calorie Calculator action
             FragmentTransaction transaction = fm.beginTransaction();
             transaction.replace(R.id.content,new CalorieCalculatorFragment());
+            transaction.setCustomAnimations(R.anim.slide_left,R.anim.slide_right);
             transaction.addToBackStack(null);
             transaction.commit();
         }
         else if (id == R.id.nav_your_recipes)
         {
+            // Handle the Your Recipes action
             FragmentTransaction transaction = fm.beginTransaction();
             transaction.replace(R.id.content,new YourRecipe());
+            transaction.setCustomAnimations(R.anim.slide_left,R.anim.slide_right);
             transaction.addToBackStack(null);
             transaction.commit();
         }
         else if (id == R.id.nav_favorites)
         {
+            // Handle the Favorites action
             FragmentTransaction transaction = fm.beginTransaction();
             transaction.replace(R.id.content,new FavoritesFragment());
+            transaction.setCustomAnimations(R.anim.slide_left,R.anim.slide_right);
             transaction.addToBackStack(null);
             transaction.commit();
         }
         else if (id == R.id.nav_settings)
         {
+            // Handle the Settings action
             FragmentTransaction transaction = fm.beginTransaction();
             transaction.replace(R.id.content,new SettingsFragment());
+            transaction.setCustomAnimations(R.anim.slide_left,R.anim.slide_right);
             transaction.addToBackStack(null);
             transaction.commit();
         }
@@ -161,7 +178,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+    {
         super.onActivityResult(requestCode, resultCode, data);
         List<Fragment> fragments = getSupportFragmentManager().getFragments();
 
@@ -169,10 +187,7 @@ public class MainActivity extends AppCompatActivity
         {
             for (Fragment f: fragments)
             {
-                if(f instanceof Step1)
-                {
-                    f.onActivityResult(requestCode,resultCode,data);
-                }
+                f.onActivityResult(requestCode,resultCode,data);
             }
         }
     }
