@@ -131,8 +131,6 @@ public class CalorieCalculatorFragment extends Fragment
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
             {
-                Log.w("POSITION:",position+"");
-
                 switch (position)
                 {
                     case 0:

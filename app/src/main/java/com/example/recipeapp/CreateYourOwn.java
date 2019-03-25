@@ -1,6 +1,7 @@
 package com.example.recipeapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,8 @@ import android.view.ViewGroup;
 
 import com.example.recipeapp.Adapters.StepAdapter;
 import com.stepstone.stepper.StepperLayout;
+
+import java.util.List;
 
 
 /**
@@ -82,7 +85,7 @@ public class CreateYourOwn extends Fragment
         stepperLayout = view.findViewById(R.id.stepperLayout);
 
         //Assign the adapter to stepperLayout by passing fragmentManager and context
-        stepperLayout.setAdapter(new StepAdapter(getActivity().getSupportFragmentManager(),getContext()));
+        stepperLayout.setAdapter(new StepAdapter(getChildFragmentManager(),getContext()));
 
         return view;
     }
@@ -91,6 +94,20 @@ public class CreateYourOwn extends Fragment
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        List<Fragment> fragments = getChildFragmentManager().getFragments();
+        if (fragments != null)
+        {
+            for (Fragment fragment : fragments)
+            {
+                fragment.onActivityResult(requestCode, resultCode, data);
+            }
         }
     }
 

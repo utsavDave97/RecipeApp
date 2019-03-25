@@ -20,15 +20,30 @@
             <TextView
                 android:fontFamily="@font/khula_regularr"
                 android:id="@+id/ingredient"
-                android:layout_weight="2.2"
+                android:layout_weight="1.7"
+                android:layout_marginTop="15dp"
                 android:text="ingredient"
+                android:textColor="@color/black"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp" />
 
             <TextView
                 android:fontFamily="@font/khula_regularr"
                 android:id="@+id/qty"
+                android:layout_marginTop="15dp"
                 android:text="qty"
+                android:textColor="@color/black"
+                android:layout_marginRight="5dp"
+                android:layout_weight="0.5"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp" />
+
+            <TextView
+                android:fontFamily="@font/khula_regularr"
+                android:id="@+id/unit"
+                android:layout_marginTop="15dp"
+                android:text="unit"
+                android:textColor="@color/black"
                 android:layout_marginRight="5dp"
                 android:layout_weight="0.5"
                 android:layout_width="wrap_content"

@@ -112,7 +112,7 @@
 
             <TextView
                 android:id="@+id/eachRecipeIngredient"
-                android:layout_width="198dp"
+                android:layout_width="142dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:text=""
@@ -123,15 +123,25 @@
 
             <TextView
                 android:id="@+id/eachRecipeIngredientQuantity"
-                android:layout_width="198dp"
+                android:layout_width="88dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/eachRecipeIngredient"
+                app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+            <TextView
+                android:id="@+id/eachRecipeUnit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:text=""
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/eachRecipeIngredient"
+                app:layout_constraintStart_toEndOf="@+id/eachRecipeIngredientQuantity"
                 app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
             <TextView
