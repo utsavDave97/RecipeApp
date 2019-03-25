@@ -7,6 +7,8 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +60,7 @@ public class Step3 extends Fragment implements BlockingStep
 
     String description;
     SQLiteHelper db;
+    FragmentManager fm;
 
     //Declaring Buttons & Edittext
     private Button nextButtonStep1, nextButtonStep2,  previousButtonStep2, previousButtonStep3, finishButtonStep3;
@@ -106,14 +109,21 @@ public class Step3 extends Fragment implements BlockingStep
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_step3, container, false);
 
+        //initialize the SQLite
         db= new SQLiteHelper(getContext());
 
+        //Initialize the fragment manager
+        fm = getActivity().getSupportFragmentManager();
+
+        //Get the instance of MyRecipe object
         mParam1 = MyRecipe.getInstance();
 
+        //Find the widgets by its ID
         step1EditText = view.findViewById(R.id.step1EditText);
         step2EditText = view.findViewById(R.id.step2EditText);
         step3EditText = view.findViewById(R.id.step3EditText);
 
+        //return the view
         return view;
     }
 
@@ -146,6 +156,7 @@ public class Step3 extends Fragment implements BlockingStep
             @Override
             public void onClick(View v)
             {
+                //Check if the text is empty or not
                 if(step1EditText.getText().toString().isEmpty())
                 {
                     step1EditText.setError("Please enter Step");
@@ -163,6 +174,7 @@ public class Step3 extends Fragment implements BlockingStep
         nextButtonStep2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Check if text is empty or not
                 if(step2EditText.getText().toString().isEmpty())
                 {
                     step2EditText.setError("Please enter Step");
@@ -194,6 +206,7 @@ public class Step3 extends Fragment implements BlockingStep
         finishButtonStep3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Check if step is empty or not
                 if(step3EditText.getText().toString().isEmpty())
                 {
                     step3EditText.setError("Please enter Step");
@@ -212,6 +225,12 @@ public class Step3 extends Fragment implements BlockingStep
 
                     //Display a Toast Message showing that recipe has been added
                     Toast.makeText(getContext(),"Recipe Added",Toast.LENGTH_SHORT).show();
+
+                    FragmentTransaction transaction = fm.beginTransaction();
+                    transaction.replace(R.id.content,new YourRecipe());
+                    transaction.setCustomAnimations(R.anim.slide_left,R.anim.slide_right);
+                    transaction.commit();
+
                     step3EditText.setText("");
                     step2EditText.setText("");
                     step1EditText.setText("");

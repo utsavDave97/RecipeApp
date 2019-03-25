@@ -55,12 +55,10 @@
     <!-- Calorie Calculator Screen -->
     <string name="imageTransition">imageTransition</string>
 
-
     <!-- Settings Screen -->
     <string name="legal_title">Legal</string>
     <string name="credits">Credits</string>
     <string name="license">License</string>
-
     <string name="contact_title">Contact</string>
     <string name="sendfeedback">Send Feedback</string>
     <string name="technicalsupport">Technical Support</string>
