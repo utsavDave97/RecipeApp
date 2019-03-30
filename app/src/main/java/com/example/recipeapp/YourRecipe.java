@@ -3,10 +3,17 @@ package com.example.recipeapp;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -15,6 +22,8 @@ import com.example.recipeapp.DataHandler.SQLiteHelper;
 import com.example.recipeapp.Model.MyRecipe;
 
 import java.util.ArrayList;
+
+import static com.example.recipeapp.MainActivity.toolbar;
 
 /**
  * @author utsav
@@ -85,6 +94,7 @@ public class YourRecipe extends Fragment
         View view = inflater.inflate(R.layout.fragment_your_recipe, container, false);
 
         ((MainActivity)getActivity()).getSupportActionBar().show();
+        ((MainActivity)getActivity()).getSupportActionBar().setTitle("Your Recipes");
 
         //Find the recyclerview by its ID
         yourRecipeRecyclerView = view.findViewById(R.id.yourRecipeRecyclerView);
@@ -128,6 +138,7 @@ public class YourRecipe extends Fragment
         super.onDetach();
         mListener = null;
     }
+
 
     /**
      * This interface must be implemented by activities that contain this

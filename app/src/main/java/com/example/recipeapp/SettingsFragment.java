@@ -15,7 +15,7 @@ import android.support.v7.preference.PreferenceManager;
  * @author utsav
  * @date 14 March 2019
  *
- * This Fragment class is for Settings Screen. It would
+ * This Fragment class is for Settings Screen. It would show different settings for the app.
  *
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -32,6 +32,7 @@ public class SettingsFragment extends PreferenceFragmentCompat
     String[] address = {"recipeapp@gmail.com"};
 
     public static SharedPreferences sp;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -80,6 +81,9 @@ public class SettingsFragment extends PreferenceFragmentCompat
     {
         //Get the preferences from XML file
         addPreferencesFromResource(R.xml.app_preferences);
+
+        ((MainActivity)getActivity()).getSupportActionBar().show();
+        ((MainActivity)getActivity()).getSupportActionBar().setTitle("Settings");
 
         //Declaring and initializing the switch preference
         gridViewSwitch = (android.support.v14.preference.SwitchPreference) findPreference("gridViewKey");
@@ -169,23 +173,29 @@ public class SettingsFragment extends PreferenceFragmentCompat
 
         /**
          * Setting on preference click listener on support preference
-         * This preference would open Credit Fragment
+         * This preference would open Credit Activity
          */
         creditPreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                return false;
+                Intent i = new Intent(getContext(),CreditsActivity.class);
+                startActivity(i);
+
+                return true;
             }
         });
 
         /**
          * Setting on preference click listener on support preference
-         * This preference would open License Fragment
+         * This preference would open License Activity
          */
         licensePreference.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                return false;
+                Intent i = new Intent(getContext(),LicenseActivity.class);
+                startActivity(i);
+
+                return true;
             }
         });
 

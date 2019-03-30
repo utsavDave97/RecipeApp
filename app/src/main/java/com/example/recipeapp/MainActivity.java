@@ -39,18 +39,18 @@ public class MainActivity extends AppCompatActivity
 {
     //Declaring the FragmentManager
     FragmentManager fm;
+    public static Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         //Disable the default title of Action Bar
         //This would enable the custom Title on Action Bar
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().show();
 
         //Initializing the FragmentManager
