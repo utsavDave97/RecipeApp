@@ -87,6 +87,9 @@ public class FavoritesFragment extends Fragment
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_favorites, container, false);
 
+        ((MainActivity)getActivity()).getSupportActionBar().show();
+        ((MainActivity)getActivity()).getSupportActionBar().setTitle("Favorites");
+
         //Getting Recycler View by its ID
         favoriteRecyclerView = view.findViewById(R.id.favoritesRecyclerView);
 
