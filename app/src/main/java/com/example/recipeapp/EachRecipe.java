@@ -84,22 +84,7 @@ public class EachRecipe extends Fragment
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_each_recipe, container, false);
 
-        Toolbar toolbar = view.findViewById(R.id.toolbarEach);
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
-
-        if(toolbar != null)
-        {
-            ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        }
-
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().onBackPressed();
-            }
-        });
-
-        toolbar.setTitle(mParam2.getName());
+        ((MainActivity)getActivity()).getSupportActionBar().setTitle(mParam2.getName());
 
         //initializing each widget with its ID
         eachRecipeImage = view.findViewById(R.id.eachRecipeImage);

@@ -1,6 +1,7 @@
 package com.example.recipeapp;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,8 +9,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +18,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -27,15 +27,13 @@ import com.ethanhua.skeleton.SkeletonScreen;
 import com.example.recipeapp.Adapters.RecipeRecyclerViewAdapter;
 import com.example.recipeapp.DataHandler.AppController;
 import com.example.recipeapp.Model.Recipe;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
-/***
+/**
  * @author Utsav Dave
  * @date 19th Feb 2019
  *
@@ -112,10 +110,12 @@ public class MainFragment extends Fragment
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
+        ((MainActivity)getActivity()).getSupportActionBar().show();
+        ((MainActivity)getActivity()).getSupportActionBar().setTitle("RecipeApp");
+
         //This line would ensure that the editText on the screen won't open keyboard as soon as the
         //screen launches.
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-
 
 
         //Getting RecyclerView by its ID
@@ -125,25 +125,60 @@ public class MainFragment extends Fragment
         selectRecipeEditText = view.findViewById(R.id.selectRecipeEditText);
         searchButton = view.findViewById(R.id.searchButton);
 
-        //Setting up LayoutManager for the RecyclerView
-        if(getResources().getConfiguration().isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_XLARGE))
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        float yInches = displayMetrics.heightPixels/displayMetrics.ydpi;
+        float xInches = displayMetrics.widthPixels/displayMetrics.xdpi;
+        double diagonalInches = Math.sqrt(xInches*xInches + yInches*yInches);
+
+        //Check if it is tablet
+        if(diagonalInches >= 6.5)
         {
+            //Check if the switch inside settings fragment is null or not
             if(SettingsFragment.gridViewSwitch != null)
             {
+                //Check if the switch is checked in settings fragment or not
+                //If it checked, switch to GridLayout Manager
                 if(SettingsFragment.gridViewSwitch.isChecked())
                 {
                     recipeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
                 }
+                //else if not checked set it to Linear Layout manager
                 else
                 {
                     recipeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
                 }
             }
         }
+        //Else if it is phone, display it with Linear Layout Manager
         else
         {
             recipeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         }
+
+        //Setting up LayoutManager for the RecyclerView
+//        if(getResources().getConfiguration().isLayoutSizeAtLeast(Configuration.SCREENLAYOUT_SIZE_MASK))
+//        if(isTablet(getContext()))
+//        {
+//            if(SettingsFragment.gridViewSwitch != null)
+//            {
+//                if(SettingsFragment.gridViewSwitch.isChecked())
+//                {
+//                    recipeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
+//                }
+//                else
+//                {
+//                    recipeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//                }
+//            }
+//        }
+//        else
+//        {
+//            recipeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//        }
+
+        //recipeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
 
         /**
          * Skeleton View added
@@ -159,8 +194,6 @@ public class MainFragment extends Fragment
 
         if(SettingsFragment.sp != null)
         {
-            Log.w("Under SP",SettingsFragment.sp.getString(getString(R.string.sortbykey),"1"));
-            Log.w("URL",URL_GET_RECIPE+"");
 
             if(SettingsFragment.sp.getString(getString(R.string.sortbykey),"1").equals(""))
             {
@@ -173,7 +206,6 @@ public class MainFragment extends Fragment
             else if(SettingsFragment.sp.getString(getString(R.string.sortbykey),"1").equals("t"))
             {
                 URL_GET_RECIPE = "https://www.food2fork.com/api/search?key="+BuildConfig.API_KEY+"&sort=t";
-                Log.w("URL under if:",URL_GET_RECIPE+"");
             }
         }
         else
@@ -205,6 +237,12 @@ public class MainFragment extends Fragment
         });
 
         return view;
+    }
+
+    private boolean isTablet(Context context)
+    {
+        return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

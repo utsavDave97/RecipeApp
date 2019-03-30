@@ -172,10 +172,10 @@ public class Step2 extends Fragment implements BlockingStep
                         unit = "tbsp";
                         break;
                     case 2:
-                        unit = "1/2 cup";
+                        unit = "cup";
                         break;
                     case 3:
-                        unit = "cup";
+                        unit = "1/2 cup";
                         break;
                 }
             }

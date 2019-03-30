@@ -81,6 +81,9 @@ public class CreateYourOwn extends Fragment
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_create_your_own, container, false);
 
+        ((MainActivity)getActivity()).getSupportActionBar().show();
+        ((MainActivity)getActivity()).getSupportActionBar().setTitle("Create Your Own");
+
         //Find the stepperLayout by its id from Layout
         stepperLayout = view.findViewById(R.id.stepperLayout);
 

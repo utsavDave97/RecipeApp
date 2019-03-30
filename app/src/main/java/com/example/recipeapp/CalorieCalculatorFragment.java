@@ -94,6 +94,9 @@ public class CalorieCalculatorFragment extends Fragment
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_calorie_calculator, container, false);
 
+        ((MainActivity)getActivity()).getSupportActionBar().show();
+        ((MainActivity)getActivity()).getSupportActionBar().setTitle("Calorie Calculator");
+
         //initializing each widget with its ID
         exerciseSpinner = view.findViewById(R.id.exerciseSpinner);
         calculateButton = view.findViewById(R.id.calculateButton);
