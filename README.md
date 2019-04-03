@@ -24,6 +24,9 @@ An app for food lovers and also for those who want to try some hand in creating 
 * **Utsav Dave**
 
 ## Screenshots
+* As soon as the app launches HomeScreen loads up.
+
+![HomeScreen](https://github.com/utsavDave97/RecipeApp/blob/master/ScreenShots/HomeScreenGIF.gif)
 
 ## License
 ```
