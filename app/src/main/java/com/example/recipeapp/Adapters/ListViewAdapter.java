@@ -75,12 +75,15 @@ public class ListViewAdapter extends ArrayAdapter
          * Setting onClickListener on RemoveButton
          *
          * This would remove the item from the ListView and notify the Adapter
+         * This would remove ingredient, and its respective quantity and unit.
          */
         removeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v)
             {
                 ingredients.remove(position);
+                quantities.remove(position);
+                units.remove(position);
                 notifyDataSetChanged();
             }
         });
