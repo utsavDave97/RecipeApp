@@ -24,9 +24,35 @@ An app for food lovers and also for those who want to try some hand in creating 
 * **Utsav Dave**
 
 ## Screenshots
-* As soon as the app launches HomeScreen loads up.
+* As soon as the app launches HomeScreen loads up. This screen pulls images, title, url from **Food2Fork API**. Here, the user can share the Recipe on any platform. Also, user can search Recipe and it would load results from API.
 
 ![HomeScreen](https://github.com/utsavDave97/RecipeApp/blob/master/ScreenShots/HomeScreenGIF.gif)
+
+* The below screen is Calorie Calculator - a unique feature of the app to calculate calories needed based on whether to gain or lose weight. User needs to input age, gender, weight, height, & exercise level.
+
+![CalorieCalculator](https://github.com/utsavDave97/RecipeApp/blob/master/ScreenShots/CalorieCalculator.gif)
+
+* The below screen is Create Your Own screen. In here, there are 3 steps in order to add your own recipe, which would be stored in local database. 
+   * Here, 1st Step is to add image from Camera/Gallery, Name and Cook time of Recipe. 
+   * 2nd Step is to add ingredients. Ingredients are pulled from API created by me using PHP and MySQL database.
+      * Also, user can remove ingredients by clicking red minus button.
+   * 3rd Step is to add step by step directions on how to make the Recipe. After, clicking Finish button all the data gets inserted inside local database and Your Recipe Fragment opens up.
+   * Inside Your Recipe Fragment, clicking on each Recipe pulls data from local database and shows it to user.
+      * Also, user can delete Recipe by clicking three elipses and the data gets removed from local database too.
+
+![CreateYourOwn](https://github.com/utsavDave97/RecipeApp/blob/master/ScreenShots/CreateYourOwnGIF.gif)
+
+* The below screen is Favorites Screen - this allows the user to like any Recipe on Home Screen and it would store it locally and show it inside Favorites Fragment.
+
+![Favorites](https://github.com/utsavDave97/RecipeApp/blob/master/ScreenShots/Favorites.gif)
+
+* The below screen is Settings Screen. 
+   * Here user can change layout of Home Screen by switching on/off the **Grid View** setting which is only applicable in Tablets.
+   * Also, user can sort the list displayed on Home Screen based on trendiness or ratings.
+   * Further, user can contact, mail or visit the developer.
+   * Lastly, there are Credits and License also shown inside Settings Screen.
+
+![Favorites](https://github.com/utsavDave97/RecipeApp/blob/master/ScreenShots/SettingsGIF.gif)
 
 ## License
 ```
