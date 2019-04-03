@@ -23,6 +23,12 @@ An app for food lovers and also for those who want to try some hand in creating 
 ## Author
 * **Utsav Dave**
 
+## Technologies Used
+* [Android Studio](https://developer.android.com/studio)
+* [Php Storm](https://www.jetbrains.com/phpstorm/)
+* [Sketch](https://www.sketch.com/)
+* [MySQL](https://www.mysql.com/)
+
 ## Screenshots
 * As soon as the app launches HomeScreen loads up. This screen pulls images, title, url from **Food2Fork API**. Here, the user can share the Recipe on any platform. Also, user can search Recipe and it would load results from API.
 
